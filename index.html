@@ -99,6 +99,51 @@
             color: white;
         }
 
+        .nav a.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(26, 95, 180, 0.3);
+        }
+
+        /* ハンバーガーメニュー */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .header {
+            position: relative;
+        }
+
         /* メインコンテンツ */
         .main {
             max-width: 900px;
@@ -279,11 +324,123 @@
 
         .accordion.open .accordion-body {
             max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .accordion.open .accordion-header {
+            background: #e8f4fd;
+            border-left: 3px solid var(--primary);
         }
 
         .accordion-content {
             padding: 1rem;
             border-top: 1px solid var(--border);
+        }
+
+        /* すべて開く/閉じるボタン */
+        .accordion-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .accordion-controls button {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .accordion-controls button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ページトップボタン */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(26, 95, 180, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(26, 95, 180, 0.5);
+        }
+
+        .scroll-top-btn:active {
+            transform: translateY(0);
+        }
+
+        /* セクション区切り強化 */
+        .section.major-section {
+            margin-top: 2.5rem;
+            border-top: 4px solid var(--primary);
+            position: relative;
+        }
+
+        .section.major-section::before {
+            content: '';
+            position: absolute;
+            top: -2.5rem;
+            left: 0;
+            right: 0;
+            height: 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(26, 95, 180, 0.05));
+        }
+
+        .section.major-section .section-title {
+            font-size: 1.4rem;
+            padding-top: 0.5rem;
+        }
+
+        /* 架電NGアコーディオン用 */
+        .ng-accordion {
+            border: 2px solid #ffe0e0;
+            background: #fff5f5;
+        }
+
+        .ng-accordion .accordion-header {
+            background: #fff5f5;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .ng-accordion .accordion-header:hover {
+            background: #ffe8e8;
+        }
+
+        .ng-accordion.open .accordion-header {
+            background: #ffe0e0;
+            border-left: 3px solid var(--secondary);
         }
 
         /* テーブル */
@@ -379,6 +536,53 @@
         }
 
         /* スマホ対応 */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: var(--bg-white);
+                z-index: 98;
+                padding: 0;
+                border-bottom: none;
+            }
+
+            .nav.open {
+                max-height: 400px;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 4px 20px var(--shadow);
+            }
+
+            .nav-inner {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0;
+            }
+
+            .nav a {
+                text-align: center;
+                padding: 0.75rem 1rem;
+                border-radius: 8px;
+            }
+
+            .scroll-top-btn {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+        }
+
         @media (max-width: 600px) {
             .header {
                 padding: 1.5rem 1rem;
@@ -388,10 +592,6 @@
                 font-size: 1.2rem;
             }
 
-            .nav {
-                top: 70px;
-            }
-
             .section {
                 padding: 1rem;
                 border-radius: 12px;
@@ -399,6 +599,10 @@
 
             .section-title {
                 font-size: 1.1rem;
+            }
+
+            .section.major-section .section-title {
+                font-size: 1.2rem;
             }
         }
 
@@ -598,6 +802,11 @@
     <header class="header">
         <h1>📞 営業トークスクリプト マニュアル</h1>
         <p>Google撮影 × 電気・ネット案内 | MIXED株式会社</p>
+        <button class="hamburger" id="hamburgerBtn" aria-label="メニュー">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <nav class="nav">
@@ -613,19 +822,6 @@
     </nav>
 
     <main class="main">
-        <!-- 架電NG -->
-        <section class="section" id="ng-list">
-            <h2 class="section-title">🚫 架電しない屋号</h2>
-            <div class="ng-list">
-                <span class="ng-item">コンビニ</span>
-                <span class="ng-item">役所・〇〇役場</span>
-                <span class="ng-item">学校系</span>
-                <span class="ng-item">ショッピングモール</span>
-                <span class="ng-item">チェーン店</span>
-            </div>
-            <p style="color: var(--text-gray); font-size: 0.85rem;">※わからない場合はスキップしてください</p>
-        </section>
-
         <!-- 全体フロー -->
         <section class="section" id="flow">
             <h2 class="section-title">📋 全体フロー</h2>
@@ -652,10 +848,27 @@
                     <div class="title">④ クロージング（アポ確定）</div>
                 </a>
             </div>
+
+            <!-- 架電NG（アコーディオン） -->
+            <div class="accordion ng-accordion" id="ng-list">
+                <div class="accordion-header">🚫 架電しない屋号（タップで確認）</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="ng-list">
+                            <span class="ng-item">コンビニ</span>
+                            <span class="ng-item">役所・〇〇役場</span>
+                            <span class="ng-item">学校系</span>
+                            <span class="ng-item">ショッピングモール</span>
+                            <span class="ng-item">チェーン店</span>
+                        </div>
+                        <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.5rem;">※わからない場合はスキップしてください</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- 導入トーク -->
-        <section class="section" id="intro">
+        <section class="section major-section" id="intro">
             <h2 class="section-title"><span class="badge">A</span> 導入トーク</h2>
             
             <div class="talk-box">
@@ -787,7 +1000,7 @@
         </section>
 
         <!-- 電気案内 -->
-        <section class="section" id="electric">
+        <section class="section major-section" id="electric">
             <h2 class="section-title">⚡ 電気案内（ヒアリング）</h2>
             
             <div class="talk-box">
@@ -940,7 +1153,7 @@
         </section>
 
         <!-- ネット案内 -->
-        <section class="section" id="net">
+        <section class="section major-section" id="net">
             <h2 class="section-title">🌐 ネット・電話回線案内</h2>
             
             <div class="talk-box">
@@ -1031,7 +1244,7 @@
         </section>
 
         <!-- クロージング -->
-        <section class="section" id="closing">
+        <section class="section major-section" id="closing">
             <h2 class="section-title"><span class="badge">D</span> クロージングトーク</h2>
             
             <div class="talk-box important">
@@ -1095,9 +1308,14 @@
         </section>
 
         <!-- 切り返し集 -->
-        <section class="section" id="qa">
+        <section class="section major-section" id="qa">
             <h2 class="section-title">❓ 切り返しトーク集</h2>
-            
+
+            <div class="accordion-controls">
+                <button id="openAllQa">すべて開く</button>
+                <button id="closeAllQa">すべて閉じる</button>
+            </div>
+
             <h3 style="margin: 1rem 0; font-size: 1rem; color: var(--secondary);">🔥 電気関連の切り返し</h3>
 
             <div class="accordion">
@@ -1598,6 +1816,9 @@
         <p>© MIXED株式会社 営業トークスクリプト マニュアル</p>
         <p style="margin-top: 0.5rem; font-size: 0.7rem;">最終更新: 2025年12月</p>
     </footer>
+
+    <!-- ページトップボタン -->
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="ページトップへ戻る">↑</button>
     </div><!-- /app-content -->
 
     <script>
@@ -1668,6 +1889,7 @@
                 loginError.classList.remove('show');
             });
         })();
+
         // アコーディオン機能
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
@@ -1685,14 +1907,99 @@
                     const headerOffset = 140;
                     const elementPosition = target.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
+
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
+
+                    // モバイルメニューを閉じる
+                    const nav = document.querySelector('.nav');
+                    const hamburger = document.getElementById('hamburgerBtn');
+                    if (nav && hamburger) {
+                        nav.classList.remove('open');
+                        hamburger.classList.remove('active');
+                    }
                 }
             });
         });
+
+        // ========== ページトップボタン ==========
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // ========== アクティブナビゲーションタブ ==========
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav a');
+
+        function updateActiveNav() {
+            const scrollPos = window.pageYOffset + 200;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // ========== ハンバーガーメニュー ==========
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.querySelector('.nav');
+
+        if (hamburgerBtn && navMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                hamburgerBtn.classList.toggle('active');
+                navMenu.classList.toggle('open');
+            });
+        }
+
+        // ========== 切り返し集：すべて開く/閉じる ==========
+        const openAllQaBtn = document.getElementById('openAllQa');
+        const closeAllQaBtn = document.getElementById('closeAllQa');
+        const qaSection = document.getElementById('qa');
+
+        if (openAllQaBtn && qaSection) {
+            openAllQaBtn.addEventListener('click', () => {
+                qaSection.querySelectorAll('.accordion').forEach(acc => {
+                    acc.classList.add('open');
+                });
+            });
+        }
+
+        if (closeAllQaBtn && qaSection) {
+            closeAllQaBtn.addEventListener('click', () => {
+                qaSection.querySelectorAll('.accordion').forEach(acc => {
+                    acc.classList.remove('open');
+                });
+            });
+        }
     </script>
 </body>
 </html>
