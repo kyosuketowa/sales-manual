@@ -243,6 +243,36 @@
             color: var(--primary);
         }
 
+        .step-remaining {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-left: 0.5rem;
+        }
+
+        .step-phase {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+
+        .step-phase.early {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .step-phase.mid {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .step-phase.late {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
         .progress-bar {
             height: 8px;
             background: var(--border);
@@ -262,7 +292,7 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 1rem;
-            padding-bottom: 100px;
+            padding-bottom: 180px; /* ヘルプエリア + ナビバー用 */
         }
 
         /* ステップカード */
@@ -271,7 +301,12 @@
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: 0 2px 15px var(--shadow);
-            animation: fadeIn 0.3s ease-out;
+            animation: stepFadeIn 0.35s ease-out;
+        }
+
+        @keyframes stepFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
@@ -281,6 +316,43 @@
 
         .step-card.hidden {
             display: none;
+        }
+
+        /* ========== フローティングヘルプエリア ========== */
+        .floating-help {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(246,245,244,1) 0%, rgba(246,245,244,0.95) 100%);
+            padding: 0.75rem 1rem;
+            z-index: 98;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+
+        .floating-help.visible {
+            display: block;
+            animation: slideUpHelp 0.3s ease-out;
+        }
+
+        @keyframes slideUpHelp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating-help-title {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .floating-help-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
         }
 
         .step-title {
@@ -345,18 +417,41 @@
             font-weight: 500;
             color: var(--text-dark);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease-out;
             text-align: center;
             font-family: 'Noto Sans JP', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(26, 95, 180, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
         }
 
         .choice-btn:hover {
             border-color: var(--primary);
             background: #f0f6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .choice-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.96) translateY(0);
+            box-shadow: none;
+        }
+
+        .choice-btn:active::after {
+            width: 200px;
+            height: 200px;
         }
 
         .choice-btn.primary {
@@ -444,6 +539,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .modal-overlay.show {
@@ -455,11 +551,14 @@
             background: var(--bg-white);
             width: 100%;
             max-width: 600px;
-            max-height: 80vh;
+            max-height: 85vh;
             border-radius: 20px 20px 0 0;
             overflow: hidden;
             transform: translateY(100%);
             transition: transform 0.3s ease-out;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-overlay.show .modal-content {
@@ -473,33 +572,98 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .modal-header h3 {
             font-size: 1rem;
             font-weight: 700;
+            flex: 1;
         }
 
         .modal-close {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25);
             border: none;
             color: white;
-            width: 36px;
-            height: 36px;
+            min-width: 44px;
+            min-height: 44px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
         }
 
         .modal-close:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-close:active {
+            transform: scale(0.95);
         }
 
         .modal-body {
             padding: 1.5rem;
             overflow-y: auto;
-            max-height: calc(80vh - 60px);
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+            background: var(--bg-main);
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .modal-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 95, 180, 0.4);
+        }
+
+        .modal-close-btn:active {
+            transform: scale(0.98);
+        }
+
+        .modal-action-link {
+            display: block;
+            text-align: center;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .modal-action-link:hover {
+            box-shadow: 0 4px 15px rgba(38, 162, 105, 0.4);
         }
 
         .modal-talk {
@@ -611,6 +775,12 @@
 
         .nav-btn.reset:hover {
             background: rgba(224, 27, 36, 0.2);
+        }
+
+        .btn-count {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-left: 0.25rem;
         }
 
         @media (max-width: 400px) {
@@ -780,7 +950,10 @@
 
         <div class="progress-container">
             <div class="progress-info">
-                <span class="step-label" id="stepLabel">STEP 1 / 10</span>
+                <span>
+                    <span class="step-label" id="stepLabel">STEP 1 / 10</span>
+                    <span class="step-phase early" id="stepPhase">序盤</span>
+                </span>
                 <span id="stepName">導入（受付突破）</span>
             </div>
             <div class="progress-bar">
@@ -792,9 +965,17 @@
             <!-- ステップはJavaScriptで動的に生成 -->
         </main>
 
+        <!-- フローティングヘルプエリア -->
+        <div class="floating-help" id="floatingHelp">
+            <div class="floating-help-title">💬 困ったらタップ</div>
+            <div class="floating-help-buttons" id="floatingHelpButtons">
+                <!-- 動的に生成 -->
+            </div>
+        </div>
+
         <nav class="nav-bar">
             <button class="nav-btn back" id="backBtn" disabled>← 戻る</button>
-            <button class="nav-btn reset" id="resetBtn">🔄</button>
+            <button class="nav-btn reset" id="resetBtn">🔄 最初から</button>
             <button class="nav-btn forward" id="forwardBtn" disabled>進む →</button>
         </nav>
     </div>
@@ -808,6 +989,10 @@
             </div>
             <div class="modal-body" id="modalBody">
                 <!-- 動的に内容を挿入 -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-btn" id="modalCloseBtn">✓ 閉じる</button>
+                <button class="modal-action-link" id="modalActionBtn" style="display: none;">🎉 アポ獲得へ進む</button>
             </div>
         </div>
     </div>
@@ -834,7 +1019,7 @@
                     { text: '代表者につながった', sub: '→ 時間確認へ', next: 'step2', class: 'primary' },
                     { text: '不在と言われた', sub: '→ 再架電確認', next: 'step1b', class: '' },
                     { text: '何の件？と聞かれた', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'whatCall', class: '' },
-                    { text: '営業はいらない', sub: '→ 終了', next: 'endRecall', class: 'danger' }
+                    { text: '営業はいらない', sub: '→ 再架電リストへ', next: 'endRecall', class: 'danger' }
                 ],
                 helps: [
                     { id: 'whatCall', label: '「何の件？」', title: '「（受付）何の件でしょうか？」への切り返し', content: `
@@ -1635,9 +1820,38 @@
             document.getElementById('stepName').textContent = step.name;
             document.getElementById('progressFill').style.width = step.progress + '%';
 
-            // 戻る・進むボタンの状態更新
-            document.getElementById('backBtn').disabled = history.length === 0;
-            document.getElementById('forwardBtn').disabled = forwardHistory.length === 0;
+            // 進行度フェーズ表示
+            const phaseEl = document.getElementById('stepPhase');
+            if (step.progress <= 30) {
+                phaseEl.textContent = '序盤';
+                phaseEl.className = 'step-phase early';
+            } else if (step.progress <= 70) {
+                phaseEl.textContent = '中盤';
+                phaseEl.className = 'step-phase mid';
+            } else {
+                phaseEl.textContent = '終盤';
+                phaseEl.className = 'step-phase late';
+            }
+
+            // 戻る・進むボタンの状態更新と動的ラベル
+            const backBtn = document.getElementById('backBtn');
+            const forwardBtn = document.getElementById('forwardBtn');
+
+            backBtn.disabled = history.length === 0;
+            forwardBtn.disabled = forwardHistory.length === 0;
+
+            // 動的ラベル
+            if (history.length > 0) {
+                backBtn.innerHTML = '← 戻る<span class="btn-count">(' + history.length + ')</span>';
+            } else {
+                backBtn.textContent = '← 戻る';
+            }
+
+            if (forwardHistory.length > 0) {
+                forwardBtn.innerHTML = '進む →<span class="btn-count">(' + forwardHistory.length + ')</span>';
+            } else {
+                forwardBtn.textContent = '進む →';
+            }
 
             // コンテンツ生成
             let html = `<div class="step-card">`;
@@ -1659,20 +1873,25 @@
                 html += `</div>`;
             }
 
-            // 切り返しヘルプ
-            if (step.helps && step.helps.length > 0) {
-                html += `<div class="help-area">`;
-                html += `<div class="help-title">💬 困ったらタップ</div>`;
-                html += `<div class="help-buttons">`;
-                step.helps.forEach(help => {
-                    html += `<button class="help-btn" onclick="showHelp('${help.id}')">${help.label}</button>`;
-                });
-                html += `</div></div>`;
-            }
-
             html += `</div>`;
 
             document.getElementById('mainContent').innerHTML = html;
+
+            // フローティングヘルプエリア更新
+            const floatingHelp = document.getElementById('floatingHelp');
+            const floatingHelpButtons = document.getElementById('floatingHelpButtons');
+
+            if (step.helps && step.helps.length > 0) {
+                let helpHtml = '';
+                step.helps.forEach(help => {
+                    helpHtml += `<button class="help-btn" onclick="showHelp('${help.id}')">${help.label}</button>`;
+                });
+                floatingHelpButtons.innerHTML = helpHtml;
+                floatingHelp.classList.add('visible');
+            } else {
+                floatingHelp.classList.remove('visible');
+            }
+
             window.scrollTo(0, 0);
         }
 
@@ -1731,18 +1950,26 @@
                 document.getElementById('modalTitle').textContent = helpData.title;
                 document.getElementById('modalBody').innerHTML = helpData.content;
                 document.getElementById('modalOverlay').classList.add('show');
+
+                // step10の場合、アポ獲得ボタンを表示
+                const actionBtn = document.getElementById('modalActionBtn');
+                if (currentStep === 'step10') {
+                    actionBtn.style.display = 'block';
+                } else {
+                    actionBtn.style.display = 'none';
+                }
             }
         }
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('show');
+        }
 
-            // step10の場合、モーダルを閉じた後にendSuccessへ
+        function closeModalAndProceed() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            // step10からendSuccessへ遷移
             if (currentStep === 'step10') {
-                const step = STEPS[currentStep];
-                if (step.nextAfterHelp) {
-                    goToStep(step.nextAfterHelp);
-                }
+                goToStep('endSuccess');
             }
         }
 
@@ -1764,6 +1991,8 @@
             }
         });
         document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+        document.getElementById('modalActionBtn').addEventListener('click', closeModalAndProceed);
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target === document.getElementById('modalOverlay')) {
                 closeModal();
