@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>営業トークスクリプト マニュアル | MIXED株式会社</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #3584e4;
+            --secondary: #e01b24;
+            --accent-yellow: #f5c211;
+            --accent-green: #26a269;
+            --accent-purple: #9141ac;
+            --bg-main: #f6f5f4;
+            --bg-white: #ffffff;
+            --text-dark: #241f31;
+            --text-gray: #5e5c64;
+            --border: #deddda;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .header h1 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ナビゲーション */
+        .nav {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: 0.5rem;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-inner {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-start;
+            padding: 0 0.5rem;
+        }
+
+        .nav a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav a:hover, .nav a:active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* メインコンテンツ */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* セクション */
+        .section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .section-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title .badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* フローチャート */
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .flow-item {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .flow-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 95, 180, 0.3);
+        }
+
+        .flow-item.yellow {
+            background: linear-gradient(135deg, #e5a50a 0%, var(--accent-yellow) 100%);
+        }
+
+        .flow-item.green {
+            background: linear-gradient(135deg, #1c8553 0%, var(--accent-green) 100%);
+        }
+
+        .flow-item.red {
+            background: linear-gradient(135deg, #c01c28 0%, var(--secondary) 100%);
+        }
+
+        .flow-item .step {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-bottom: 0.3rem;
+        }
+
+        .flow-item .title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.2rem;
+        }
+
+        /* トークボックス */
+        .talk-box {
+            background: #f8f7f6;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .talk-box.important {
+            border-left-color: var(--secondary);
+            background: #fef5f5;
+        }
+
+        .talk-box.tip {
+            border-left-color: var(--accent-green);
+            background: #f4fbf7;
+        }
+
+        .talk-box.warning {
+            border-left-color: var(--accent-yellow);
+            background: #fffbeb;
+        }
+
+        .talk-box-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .talk-box.important .talk-box-label { color: var(--secondary); }
+        .talk-box.tip .talk-box-label { color: var(--accent-green); }
+        .talk-box.warning .talk-box-label { color: #b5890a; }
+
+        .talk-content {
+            font-size: 0.95rem;
+            line-height: 1.9;
+        }
+
+        .talk-content .highlight {
+            background: linear-gradient(transparent 60%, #fef08a 60%);
+            font-weight: 500;
+        }
+
+        /* 折りたたみ */
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: var(--bg-main);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: #eae9e7;
+        }
+
+        .accordion-header::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .accordion.open .accordion-header::after {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: var(--bg-white);
+        }
+
+        .accordion.open .accordion-body {
+            max-height: 2000px;
+        }
+
+        .accordion-content {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* テーブル */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f7f6;
+        }
+
+        /* ステータスバッジ */
+        .status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status.ok { background: #d3f9d8; color: #1b5e20; }
+        .status.ng { background: #ffe0e0; color: #c01c28; }
+        .status.check { background: #fff3cd; color: #856404; }
+
+        /* 架電NGリスト */
+        .ng-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .ng-item {
+            background: #ffe0e0;
+            color: #c01c28;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* 会社情報 */
+        .company-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .company-card {
+            background: var(--bg-main);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .company-card h4 {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .company-card p {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* フッター */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 600px) {
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav {
+                top: 70px;
+            }
+
+            .section {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* スムーズスクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📞 営業トークスクリプト マニュアル</h1>
+        <p>Google撮影 × 電気・ネット案内 | MIXED株式会社</p>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#flow">📋 全体フロー</a>
+            <a href="#intro">🅰 導入トーク</a>
+            <a href="#electric">⚡ 電気案内</a>
+            <a href="#net">🌐 ネット案内</a>
+            <a href="#closing">✅ クロージング</a>
+            <a href="#qa">❓ 切り返し集</a>
+            <a href="#info">📍 会社情報</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- 架電NG -->
+        <section class="section" id="ng-list">
+            <h2 class="section-title">🚫 架電しない屋号</h2>
+            <div class="ng-list">
+                <span class="ng-item">コンビニ</span>
+                <span class="ng-item">役所・〇〇役場</span>
+                <span class="ng-item">学校系</span>
+                <span class="ng-item">ショッピングモール</span>
+                <span class="ng-item">チェーン店</span>
+            </div>
+            <p style="color: var(--text-gray); font-size: 0.85rem;">※わからない場合はスキップしてください</p>
+        </section>
+
+        <!-- 全体フロー -->
+        <section class="section" id="flow">
+            <h2 class="section-title">📋 全体フロー</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-gray);">各ステップをタップすると詳細に移動します</p>
+            
+            <div class="flow-chart">
+                <a href="#intro" class="flow-item">
+                    <div class="step">STEP A</div>
+                    <div class="title">① 導入トーク（代表者確認）</div>
+                </a>
+                <div class="flow-arrow">↓</div>
+                <a href="#google" class="flow-item yellow">
+                    <div class="step">STEP B1</div>
+                    <div class="title">② Google撮影の案内</div>
+                </a>
+                <div class="flow-arrow">↓</div>
+                <a href="#electric" class="flow-item green">
+                    <div class="step">STEP B2 → C</div>
+                    <div class="title">③ 電気・ネット見積もり案内</div>
+                </a>
+                <div class="flow-arrow">↓</div>
+                <a href="#closing" class="flow-item red">
+                    <div class="step">STEP D</div>
+                    <div class="title">④ クロージング（アポ確定）</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 導入トーク -->
+        <section class="section" id="intro">
+            <h2 class="section-title"><span class="badge">A</span> 導入トーク</h2>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 オープニング</div>
+                <div class="talk-content">
+                    お忙しいところ恐れ入ります。<br>
+                    <span class="highlight">グーグルマップ撮影会社 ミックスの○○</span>です。<br><br>
+                    〇〇（会社名）の<span class="highlight">代表者様</span>はいらっしゃいますでしょうか？
+                </div>
+            </div>
+
+            <div class="talk-box warning">
+                <div class="talk-box-label">⚠️ ここで会社名をしっかり確認する</div>
+                <div class="talk-content">
+                    電話帳の情報と実際の会社名が違う場合があります
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">社長不在の場合</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            「グーグル掲載の件でのご連絡になりますが<br>
+                            <span class="highlight">お昼か夕方頃</span>には戻られますか？」<br><br>
+                            ※二者択一で聞く
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="talk-box tip">
+                <div class="talk-box-label">✅ 代表者につながったら</div>
+                <div class="talk-content">
+                    Googleマップのお写真の件でお電話させていただいたのですが、<br>
+                    <span class="highlight">只今お時間少し大丈夫でしょうか？</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google撮影案内 -->
+        <section class="section" id="google">
+            <h2 class="section-title"><span class="badge">B1</span> Google撮影の案内</h2>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 撮影案内トーク</div>
+                <div class="talk-content">
+                    今グーグルマップに掲載する事業所の写真を順々に撮影しておりまして、<br>
+                    もちろん<span class="highlight">無料</span>なのですが、<br>
+                    通常通り <span class="highlight">看板や外観だけ</span> の撮影でよろしいでしょうか？<br><br>
+                    （内観も希望されますか？）
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">📷 ストリートビューとインドアビューの違い</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p><strong>【ストリートビュー】</strong><br>
+                        今、地図の横に建物の目印としてお写真が載っているのですが、そちらが車による通りすがりの自動撮影となります。</p>
+                        <br>
+                        <p><strong>【インドアビュー】</strong><br>
+                        今回は代表者様お立ち合いの元、お好きな箇所や角度から<span class="highlight">最大8カットまで</span>お撮りさせていただけます♪</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">❌ 「Googleはいらないよ」と言われたら</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            こちらのほかにも弊社さまざまなキャンペーン中でして、<br>
+                            <span class="highlight">電力会社さんと通信会社さんにご協賛</span>いただいている中で<br>
+                            電気 または お電話回線（インターネット）の<br>
+                            <span class="highlight">事業所割引の無料診断</span>受けていただけるキャンペーンのご用意もございます(^^)<br><br>
+                            料金をきちんとご説明させていただきまして、<br>
+                            お安くなってご納得いただけた場合には、<br>
+                            <span class="highlight">キャッシュバックプレゼント</span>もございます♪
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 電気・ネット案内への誘導 -->
+        <section class="section" id="bridge">
+            <h2 class="section-title"><span class="badge">B2</span> 電気・ネット案内への誘導</h2>
+            
+            <div class="talk-box important">
+                <div class="talk-box-label">⚠️ このタイミングで決裁確認をする</div>
+                <div class="talk-content">
+                    ※電気やネットの契約変更ができる決裁権があるか確認
+                </div>
+            </div>
+
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 トークパターン①（シンプル版）</div>
+                <div class="talk-content">
+                    撮影はグーグル認定のカメラマンがお伺いするんですが、<br>
+                    今回は<span class="highlight">費用かからないご案内</span>でして、<br><br>
+                    皆さんに撮影の際に一点だけいっしょにお伝えしてたのが、<br>
+                    今すごく高くなってる電気の<span class="highlight">電気代支援の見積だけ</span><br>
+                    電力会社さんと協力してお出ししてたんですね！
+                </div>
+            </div>
+
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 トークパターン②（詳細版）</div>
+                <div class="talk-content">
+                    撮影はグーグル認定のカメラマンがお伺いするんですが、<br>
+                    今回こちらのキャンペーン自体が、<span class="highlight">電力会社さんと通信会社さんと協力しての</span>ご案内になりますので<br>
+                    費用は<span class="highlight">1円もかからない</span>です♪<br><br>
+                    そこで みなさまに一点だけご協力いただきたいのが、<br>
+                    撮影でお伺いした際に<br>
+                    電気料金 or インターネット（お電話回線）の<br>
+                    <span class="highlight">"複数社"無料見積もり</span> を取らせていただいております！
+                </div>
+            </div>
+
+            <div class="talk-box tip">
+                <div class="talk-box-label">📝 ネット利用確認</div>
+                <div class="talk-content">
+                    更新することで事業所様の情報が正確に掲載されます。<br>
+                    <span class="highlight">ちなみにインターネットのご利用はございますか？</span><br><br>
+                    ※利用がなくても、ネット回線の契約があるか否かが重要！
+                </div>
+            </div>
+        </section>
+
+        <!-- 電気案内 -->
+        <section class="section" id="electric">
+            <h2 class="section-title">⚡ 電気案内（ヒアリング）</h2>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 判別トーク</div>
+                <div class="talk-content">
+                    ちなみに、代表者様のところは<br>
+                    <span class="highlight">関西電力以外のところで割引って受けられてますか？</span>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>回答</th>
+                        <th>対応</th>
+                    </tr>
+                    <tr>
+                        <td><strong>関西電力</strong></td>
+                        <td>→ 関西電力向けトークへ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>新電力</strong></td>
+                        <td>→ 新電力向けトークへ</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">【関西電力の場合】トーク</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうですよね！だったらちょうどよかったです！<br>
+                            今、<span class="highlight">関西電力お使いの方にご案内</span>でして、<br><br>
+                            電気料金に関しましては、去年の夏場から電気代があがっているため、<br>
+                            ちょうど<span class="highlight">"安いね！"</span>とご実感いただける時期なんですね！<br><br>
+                            どの電力会社のサービスやプランが御社様に合うか、<br>
+                            弊社では<span class="highlight">複数社で横並びにして料金を比較</span>していただけまして～
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">【新電力の場合】トーク</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうですよね！だったらちょうどよかったです！<br>
+                            今回そういった方が<span class="highlight">電気代支援の対象</span>でして、<br>
+                            ちなみにどちらの会社さんでご利用でしょうか？<br><br>
+                            （忘れた・迷っている系）<br>
+                            「ハルエネでんき」「おトクでんき」「エフエネでんき」ではなかったでしょうか？
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--primary);">★ヒアリング項目★</h3>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">❓ 必須確認事項</div>
+                <div class="talk-content">
+                    2.3点ほど確認なのですが、<br>
+                    電気の利用料金は、<span class="highlight">毎月だいたいおいくらくらいお支払いでしょうか？</span>
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem;">📊 獲得判定フロー</h3>
+            
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>条件</th>
+                        <th>判定</th>
+                        <th>次のアクション</th>
+                    </tr>
+                    <tr>
+                        <td>月1万円以上・オール電化等なし</td>
+                        <td><span class="status ok">獲得可</span></td>
+                        <td>クロージングへ</td>
+                    </tr>
+                    <tr>
+                        <td>月1万円以下だが動力(200V)あり</td>
+                        <td><span class="status ok">獲得可</span></td>
+                        <td>クロージングへ</td>
+                    </tr>
+                    <tr>
+                        <td>月1万円以下・動力なし</td>
+                        <td><span class="status ng">対象外</span></td>
+                        <td>ネット案内へ</td>
+                    </tr>
+                    <tr>
+                        <td>オール電化・エコキュート・エネファームあり</td>
+                        <td><span class="status ng">対象外</span></td>
+                        <td>ネット案内へ</td>
+                    </tr>
+                    <tr>
+                        <td>月10万円以上</td>
+                        <td><span class="status check">要確認</span></td>
+                        <td>高圧・キュービクル確認へ</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">🏭 高圧電力の場合の対応</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p><strong>高圧の可能性が高い事業所：</strong><br>
+                        スーパー、ゴルフ場、旅館、工場、温泉、葬祭場、教習所など</p>
+                        <br>
+                        <div class="talk-content">
+                            「キュービクル（事業所の外とかに2mぐらいの白い大きい箱）はありますか？」<br>
+                            ※有無にかかわらずOK<br><br>
+                            「高圧お使いの場合は、<span class="highlight">直近1年分の明細（請求書）のご準備</span>をいただいております。<br>
+                            毎月、電力会社さんから届く明細の保管はございますか？」<br><br>
+                            「ちなみに <span class="highlight">更新月はいつ頃</span>でしょうか？」
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">📝 電気代を把握していない人への当て込みヒアリング</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            だいたいで大丈夫なのですが、<br>
+                            事業所は一般家庭くらいの敷地の広さはございますか？<br>
+                            （はい or それに近い）<br><br>
+                            あとやっぱり朝から夕方くらいまで電気つけたり、<br>
+                            夏場冬場はエアコンを使いますよね？<br>
+                            （はい）<br><br>
+                            であれば・・・・<span class="highlight">1万円は超えられている</span>かと思いますので大丈夫です♪
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="talk-box tip">
+                <div class="talk-box-label">📄 明細確認</div>
+                <div class="talk-content">
+                    ちなみにお料金の確認は、毎月届く <span class="highlight">紙明細（検針票）</span>ですか？<br>
+                    もしくは、携帯やパソコンから <span class="highlight">WEB明細</span>でみられてますか？<br><br>
+                    ※WEB明細の場合<br>
+                    「マイページにログインするためのIDとパスワードはお持ちですか？」
+                </div>
+            </div>
+        </section>
+
+        <!-- ネット案内 -->
+        <section class="section" id="net">
+            <h2 class="section-title">🌐 ネット・電話回線案内</h2>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 電気から切り替えトーク</div>
+                <div class="talk-content">
+                    電気は替えられないよー！とおっしゃるお客様には、<br>
+                    <span class="highlight">通信会社さまにも協賛</span>いただいているため、<br>
+                    ネット回線やお電話回線の無料見積りをみていただくことでも対応させていただいております♪
+                </div>
+            </div>
+
+            <div class="talk-box tip">
+                <div class="talk-box-label">📶 NTT光回線の場合</div>
+                <div class="talk-content">
+                    インターネットに関しましては、<br>
+                    すでにNTTでインターネットされているお客様へ、<br>
+                    いまお使いの環境などは変わらず<br>
+                    月々のご負担である<span class="highlight">固定費削減</span>のご提案ができます♪
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem;">❓ ヒアリング項目</h3>
+            
+            <div class="talk-box">
+                <div class="talk-box-label">📝 NTT光回線系でご利用の場合</div>
+                <div class="talk-content">
+                    ・ちなみに、ネット回線はどちらでお繋ぎでしょうか？<br>
+                    ・月々おいくらくらいお支払いですか？<br>
+                    ・プロバイダはどちらお使いですか？<br>
+                    ・普段お料金はどのように確認されてますか？<br>
+                    ・明細はありますか？（紙 or WEB？）
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">🤔 ネット繋いでるけど、どこかわからない場合</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            ・お電話機の近くに<span class="highlight">黒色のお弁当箱サイズ</span>（手のひらサイズ）の<br>
+                            　チカチカひかる機械はありますか？<br><br>
+                            → ある場合：「そちらに<span class="highlight">NTTというロゴ</span>はありますか？」<br>
+                            → ある → 「そちらがあればNTT光回線でネットお使いです。」<br><br>
+                            ・毎月NTTさんから請求書は届いてないでしょうか？<br>
+                            → 届いている → NTT回線でネットお使いです
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">📞 アナログ回線（固定電話のみ）の場合</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            ゆくゆくは<span class="highlight">アナログ回線（通常回線）が廃止</span>となるため、<br>
+                            アナログ回線から光回線移行の案内が広まりつつあるのですが<br>
+                            お客様のところには、NTTさんやソフトバンクさんから<br>
+                            こういう案内のお知らせとかってもう届きましたか？？<br><br>
+                            アナログでお使いいただくより、月々の基本料金も通話料もお安い<span class="highlight">光電話</span>に<br>
+                            みなさま順々に切替えていただいてまして、弊社は今回そのご案内が可能となります！<br><br>
+                            ※NTTさんは<span class="highlight">2026年以降</span>、光回線への切り替えをさらに進める予定です。<br>
+                            最終的には、2030年～2035年度を目処に全国的にアナログから光への移行が完了する見込みです。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">📺 eo光やJ:COMなどをご利用の場合</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            今回はNTT光回線系のインターネット回線の案内となるんですが、<br>
+                            <span class="highlight">お仕事でメールアドレスのご利用ってございますでしょうか？</span><br><br>
+                            <strong>【あり、使ってる】</strong><br>
+                            → 失礼いたしました！それであれば、NTT光回線へのお切替えのご提案って難しいでしょうか・・？<br><br>
+                            <strong>【なし、使ってない】</strong><br>
+                            → それであれば、NTTの回線をお使いいただくことで、<br>
+                            通信費が今よりおトクにご利用いただけるかもしれませんので、<br>
+                            実際にどのくらいお安くなるかお話を聞いていただければと思います！<br><br>
+                            ※工事費用や違約金のことを聞かれた場合<br>
+                            <span class="highlight">「今回はキャンペーンなので、すべて弊社負担です！」</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- クロージング -->
+        <section class="section" id="closing">
+            <h2 class="section-title"><span class="badge">D</span> クロージングトーク</h2>
+            
+            <div class="talk-box important">
+                <div class="talk-box-label">🎤 まとめトーク</div>
+                <div class="talk-content">
+                    今回の内容を簡単にまとめると<br><br>
+                    毎月お支払いの（電気料金 ／ ネット料金 ／ お電話回線の料金）が<br>
+                    <span class="highlight">今よりどれくらいお安くなるか</span>見ていただけて<br><br>
+                    【撮影ありの方】<br>
+                    📷 <span class="highlight">グーグル撮影も無料で受けていただける</span> というキャンペーンになります♪<br><br>
+                    【撮影なしの方】<br>
+                    💰 <span class="highlight">キャッシュバックを受けていただける</span> というキャンペーンになります♪<br><br>
+                    色々お伝えしましたが、今回の内容は<span class="highlight">費用は一切かからない</span>です！
+                </div>
+            </div>
+
+            <div class="talk-box warning">
+                <div class="talk-box-label">⚠️ ハイハイ系の人への念押し</div>
+                <div class="talk-content">
+                    「ご説明は以上になりますが、<br>
+                    ここまでのキャンペーンについて<span class="highlight">ご不明点はなかったですか？</span>」と軽く念押し。
+                </div>
+            </div>
+
+            <div class="talk-box tip">
+                <div class="talk-box-label">📅 アポ確定トーク</div>
+                <div class="talk-content">
+                    それではこの後、本日中に（連休明けから順番に）<br>
+                    撮影部署の者から <span class="highlight">簡単なご確認・訪問の日時を決めるお電話</span>がもう一本入りますので、<br>
+                    そちらだけご対応お願いします(*^^*)
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">🏃 「このあと出掛けるよ！忙しくなるよ！」と言われたら</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            差し支えがなければ<span class="highlight">携帯番号</span>をお伺いできますでしょうか？<br>
+                            そちらにお掛けさせていただきますね！<br><br>
+                            ※携帯の番号は、留守軽減のためなるべく聞いてください。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="talk-box">
+                <div class="talk-box-label">🎤 締めトーク</div>
+                <div class="talk-content">
+                    私〇〇と申しますが失礼がないようにお電話口様の<span class="highlight">お名前</span>をお伺いしてよろしいですか？<br><br>
+                    では〇〇様宛にお電話いたしますので、ご対応だけお願いいたします。<br>
+                    では失礼致します、ありがとうございました☆<br><br>
+                    <strong>（最後まで丁寧に！）</strong>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%); color: white; padding: 1.5rem; border-radius: 12px; text-align: center; margin-top: 1.5rem;">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎉</div>
+                <div style="font-weight: 700; font-size: 1.1rem;">アポ受注完了！お疲れ様でした</div>
+            </div>
+        </section>
+
+        <!-- 切り返し集 -->
+        <section class="section" id="qa">
+            <h2 class="section-title">❓ 切り返しトーク集</h2>
+            
+            <h3 style="margin: 1rem 0; font-size: 1rem; color: var(--secondary);">🔥 電気関連の切り返し</h3>
+
+            <div class="accordion">
+                <div class="accordion-header">「新電力から関電に戻した」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            新電力が高騰した影響とかで関電に戻っている方も多いのですが、<br>
+                            今って関電さんも同様の<span class="highlight">燃料調整額の値上げを上限なしで</span>行ってますので<br>
+                            結果的にまた電気代があがってしまっている状態なんですね。<br><br>
+                            ですので今回は事業所割引で高騰の影響を受けにくいように、<br>
+                            <span class="highlight">電気の単価を調整</span>させていただけます。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「そもそも関電から替えたことがない」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            <strong>【スマートメータートーク】</strong><br><br>
+                            そもそも安くなる理由の部分ですが、<br>
+                            現在は関西電力が事業所様の<span class="highlight">メーター交換</span>をさせていただいておりますので、<br>
+                            その場に行かなくても使用量の確認ができるようになっておりまして、<br>
+                            その影響で<span class="highlight">検針員がまわる必要がなくなった分、人件費が大幅に削減</span>出来ております。<br><br>
+                            今回ご案内しているのは、今お使いの関西電力さんの<br>
+                            発電・送電などの電気の供給や設備は<span class="highlight">そのまま</span>で、<br>
+                            <span class="highlight">明細発行を担当する会社が変わる</span>ってだけなんですね！
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「お～いお茶トーク」（電気切り替えの例え話）</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            これは、電気なのでイメージがしにくいかもしれないですが、一般的な物流と全く同じでして、<br><br>
+                            例えばなんですが<br>
+                            <span class="highlight">お～いお茶をコンビニで買った場合は定価の150円</span>くらいするんですが、<br>
+                            <span class="highlight">スーパーなどで買った場合は100円</span>くらいで買えるじゃないですか？<br><br>
+                            ただ、安い価格で買ったからといって<br>
+                            質が悪かったり量が少なかったりってことは無いかと思うんですね。<br>
+                            その理由って言うのは、やはり<span class="highlight">メーカーが同じ</span>だからなんですが、<br><br>
+                            電気もそれと全く同じなんですね！<br>
+                            発電や送電は今まで通り関西電力さんなので安心して電気使っていただけますし、<br>
+                            仮にスーパーで買ったお～いお茶にゴミが入ってたとしたら、<br>
+                            購入したスーパーではなくて<span class="highlight">メーカーの伊藤園に問い合わせる</span>じゃないですか？<br><br>
+                            なので電気もトラブルがあった時の対応は関西電力さんから変わってしまうことはないんですね！
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「なんか間に入るん嫌や、他の会社かませたくない」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            あっ！<span class="highlight">間に入るというより役割分担</span>みたいなものでして、<br>
+                            電気の供給は今後もずっと関電さんなので、<br>
+                            関電さんから直で電気が送られてくるんですね！<br>
+                            なので<span class="highlight">間に入りようがない</span>んですよ！
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「でんき変わるならいらない系」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            <span class="highlight">電気は変わらない</span>ですよ！<br>
+                            今回ご案内しているのは今お使い関西電力さんの<br>
+                            発電・送電などの電気の供給や設備はそのままで、<br>
+                            「エネパル」で<span class="highlight">割引を適用するだけ</span>で電気代支援が受けることが出来るんです！<br><br>
+                            ※エネパルってなに？ → 事業所用の割引をしている新電力会社です。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「契約変わるんでしょ？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            契約というよりは<span class="highlight">窓口</span>になるんですけども、<br>
+                            でんきは「発電」「送電」「明細発行」の大きく3つの業務に分かれるのですが<br>
+                            発電、送電の最も大事な部分は関西電力以外出来ないので、もちろんそのままで<br>
+                            今回は<span class="highlight">明細発行の窓口の部分だけエネパルが担当</span>するだけで<br>
+                            電気代支援を受けていただけます！<br><br>
+                            ですのでなにかあった時の対応も供給変わらないので、<br>
+                            関西電力さんから変わりませんのでご安心ください。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「知り合いのところだから・付き合いで変えた」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうですよね！お知り合いの方が代理店さんなんですかね？（YES）<br>
+                            ちなみに<span class="highlight">最初のお支払いってもう終わってますよね？</span>（YES）<br>
+                            だったら大丈夫ですよ！<br><br>
+                            なぜかと言いますと、最初のお支払いが終わった時点で<br>
+                            お知り合いの方には<span class="highlight">紹介料が振り込まれてます</span>ので<br>
+                            今お客様がどこに変えてもその方には何の影響もないのでご安心ください☆<br><br>
+                            ※代理店に知り合いがいる場合に有効なトーク<br>
+                            ※人情系は正直難しいので見切り付けて自宅案内に切り替えましょう
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「変えたばっかりだから」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうですよね！最近変えられたんですかね？（いつでもOK）<br>
+                            だったら問題ないですよ！<br><br>
+                            今お使いの○○でんきさんで<span class="highlight">違約金が発生した場合も、<br>
+                            キャンペーン中なので全額こちらで負担</span>するようになってますのでご安心ください☆
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「とりあえずいいんで～、結構です～、変えてるからいい！」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうですよね～、○○でんきさんに変えられたのって<br>
+                            やっぱりちょっとでもお安くなればっていうので変えられたんですよね？<br><br>
+                            そうですよね！<span class="highlight">新電力って使ってるプランによって「合う合わない」がある</span>んですね。<br>
+                            弊社は複数社ご案内できる電力会社さんがありまして、<br>
+                            お伺いしたときにお見積りお出しするので、<br>
+                            もしやらないってなっても、<span class="highlight">そういう選択肢があるっていうのを知っていただく</span>分には<br>
+                            問題ないと思うんですね～？
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「ガス代、携帯代などとセット割引が付いてる」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そちらなんですが、結論<span class="highlight">トータルで見ると今よりお安くなる</span>んですね！<br><br>
+                            どういう事かと言うと、今回ご紹介しているパルパワーでんきに変更しますと<br>
+                            おっしゃられてるセット割引はつかなくなってしまうんですね。<br><br>
+                            ただ、その分<span class="highlight">電気料金の方に大幅に割引</span>を付けさせていただいているので<br>
+                            結果的に合計で見ると今よりお安くなるんですよ！<br><br>
+                            電気代とガス代（ケータイ代）の合計が今よりもお安くなればご問題ないですよね？☆
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「新電力会社の倒産や事業撤退を気にしてる人」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            そうなんですよ～！お客様が仰る通り、<br>
+                            ここ1.2年の燃料高騰のあおりを受けて倒産されてる会社さんもあるのですが<br><br>
+                            <strong>【エレノバの場合】</strong><br>
+                            今回私どもがご紹介しているエレノバ電気を提供しているのが<br>
+                            <span class="highlight">株式会社フォーバルテレコム</span>という企業でして、<br>
+                            電気事業の他に通信系の事業も展開している資本力のある大きな会社なので、<br>
+                            そのあたりはご安心頂ければと思います！<br><br>
+                            <strong>【ハルとくの場合】</strong><br>
+                            今回私どもがご紹介してるハルとくでんきは、<br>
+                            事業所様向けに割引をご案内してる会社の中で<span class="highlight">シェアが1位</span>の会社なんですね！<br>
+                            母体の会社も（光通信っていう）<span class="highlight">東証プライム上場</span>の大きい会社になりますので、<br>
+                            そのあたりはみなさん安心して割引を受けていただいてます～！<br><br>
+                            <strong>【U-POWER（USENでんき）の場合】</strong><br>
+                            今回私どもがご紹介しているU-POWERでんきは、<br>
+                            <span class="highlight">株式会社U-NEXT HOLDINGSのグループ会社</span>が提供している電力供給サービスでして、<br>
+                            動画配信の『U-NEXT』、店舗BGMの『USEN』などをお聞きになられたことがあるかと思います☆<br><br>
+                            <strong>【パルパワーの場合】</strong><br>
+                            今回私どもがご紹介しているパルパワーでんきは、<br>
+                            株式会社エネパルが提供する電力サービスでして、<br>
+                            事業形態に応じた複数プランのご提案が可能な電力会社となります♪
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem; color: var(--primary);">📞 一般的な質問への回答</h3>
+
+            <div class="accordion">
+                <div class="accordion-header">「何見てかけてるんですか？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            <span class="highlight">電子電話帳から順番に</span>ご連絡させて頂いております。<br><br>
+                            ※「リスト」と言うのはNG！<br>
+                            ※非掲載リストの場合：「市外局番から順番にご連絡させて頂いております」
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「（受付）何の件でしょうか？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            <span class="highlight">グーグル掲載の件</span>になりますので、ご不在でしたらまた改めます。失礼いたします。<br><br>
+                            それでもしつこく聞いてくる場合<br>
+                            →（企業情報の取り扱いになりまして）<br>
+                            代表者様宛の件になりますので、急ぎではないのでまた改めます。失礼いたします。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「おたくら何者なん？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            <span class="highlight">グーグル認定のカメラマンが在籍している撮影会社</span>です。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「カメラマンが電気やネットの説明をするの？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            おっしゃる通りです！<br>
+                            <span class="highlight">エリア担当1名</span>がお伺いさせていただいてます。<br><br>
+                            グーグル認定のカメラマンですが<br>
+                            <span class="highlight">電力会社や通信会社の取次業務もさせていただいている</span>ので、<br>
+                            そちらの部分もご説明が可能となります。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「結局目的は電気でしょ？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            いえいえ(感じ良く)、私共は<span class="highlight">撮影会社</span>なので、撮影をさせていただきたいんですが、<br>
+                            撮影自体が通常は費用がかかるものだったので、<br>
+                            お客様からすると「リスクだ」というお声が沢山あったんですね。<br><br>
+                            なのでお客様には一切費用がかからないように<br>
+                            <span class="highlight">電気の会社さんと協力してご案内</span>をさせていただいてるんですね。<br><br>
+                            （なんでそんなことできるの？）<br>
+                            私どもは<span class="highlight">紹介料を電力会社さんや通信会社さんから頂いて</span>まして、<br>
+                            そちらをグーグル撮影に充てることができるので、<br>
+                            費用を掛けずに撮影が出来るようになっております☆
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「キャッシュバックいくらもらえる？」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            ご利用状況や月々の使用量によって変わってきますが・・・<br>
+                            <span class="highlight">1万5千円～最大7万円くらい</span>のキャッシュバックを<br>
+                            受けられているお客様が多いですよ♪<br><br>
+                            電気ネットともに、実際切り替えると今よりどれくらいお安くなるか、<br>
+                            CBはいくらもらえるのかっていうところを詳しくご説明させていただきたいので、<br>
+                            <span class="highlight">明細をご準備いただき、訪問のお時間を作っていただけたら</span>と思います(*^^*)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「こっちがなんかすることあるの？・手続きめんどい系」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            今回、<span class="highlight">面倒なお手続きは一切ございません！</span><br><br>
+                            同じようなご心配事をお持ちの事業者様が多いくいらっしゃるのですが、<br>
+                            実際のところ<span class="highlight">"無料サポート"でカバー</span>できておりますのでご安心ください☆
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header">「過去にネット引けないと言われたことがある」</div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <div class="talk-content">
+                            「なぜだめだったか」の理由にもよりますが、<br>
+                            そのようにおっしゃるお客様って実は多いんですよ！<br><br>
+                            工事担当者によって判断がさまざまだということも1つの要因なのですが、<br>
+                            たとえば作業員の「経験値・その日のスケジュール」などによっても<br>
+                            導入できるか否かの結果が左右されるケースが少なくないんですね。<br><br>
+                            ただ弊社では、<span class="highlight">長年お付き合いのある入線専門業者さん</span>にお願いしておりますので、<br>
+                            今まで他社さんで"難しい"とされていたお客様でも<br>
+                            <span class="highlight">"開通できたよ☆"ってケースが多く</span>大変喜ばれています！<br><br>
+                            こういったことも含め、エリア担当がご説明でまわってますので<br>
+                            一度お話聞いていただけないでしょうか？(^^)/
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem; color: var(--text-gray);">🚪 対象外の場合</h3>
+
+            <div class="talk-box">
+                <div class="talk-box-label">📝 案内控える場合のトーク</div>
+                <div class="talk-content">
+                    現状どちらもお安くご利用いただいていらっしゃいますので、<br>
+                    <span class="highlight">今回はご案内控えさせていただきます。</span><br>
+                    お時間いただき、ありがとうございました！<br><br>
+                    新たなキャンペーンが出ましたら、その時はご連絡させていただきたいと思います！<br>
+                    またご機会があればお願いいたします♪<br><br>
+                    <strong>（最後まで丁寧に）</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- 獲得対象早見表 -->
+        <section class="section" id="target">
+            <h2 class="section-title">📊 電気獲得対象 早見表</h2>
+            
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>パターン1</th>
+                        <th>パターン2</th>
+                        <th>パターン3</th>
+                        <th>パターン4</th>
+                    </tr>
+                    <tr>
+                        <td><strong>オール電化</strong></td>
+                        <td>なし</td>
+                        <td>なし</td>
+                        <td>あり</td>
+                        <td>あり</td>
+                    </tr>
+                    <tr>
+                        <td><strong>200V動力</strong></td>
+                        <td>あり</td>
+                        <td>なし</td>
+                        <td>あり</td>
+                        <td>なし</td>
+                    </tr>
+                    <tr>
+                        <td><strong>評価</strong></td>
+                        <td><span class="status ok">⭕ OK</span></td>
+                        <td><span class="status ok">⭕ OK</span></td>
+                        <td><span class="status ok">⭕ OK</span></td>
+                        <td><span class="status ng">❌ NG</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem;">✅ 獲得対象例</h3>
+            <ul style="margin-left: 1.5rem; line-height: 2;">
+                <li>① 100V 従量電灯（家庭用）</li>
+                <li>② 200V 動力（業務用エアコン、冷蔵庫、食洗機、電動シャッター、コンプレッサー等）</li>
+                <li>③ 高圧（6kV→キュービクル→100/200V）※更新月タイミング、請求書1年分必須</li>
+                <li>④ 事業所が月1万円未満なら、代表者ご自宅案内へ</li>
+                <li>⑤ 太陽光発電中でも、送配電会社（関西電力）から入金あればOK</li>
+            </ul>
+
+            <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem; color: var(--secondary);">❌ 獲得NG例</h3>
+            <ul style="margin-left: 1.5rem; line-height: 2; color: var(--secondary);">
+                <li>・動力なしで、オール電化／エコキュート／エネファーム いずれかあり</li>
+                <li>・床暖が電気式のみ（※ガス式であれば獲得可）</li>
+                <li>・地域電力縛りの電気工事店</li>
+                <li>・ENEOS電気利用 GS など</li>
+            </ul>
+
+            <div class="talk-box tip" style="margin-top: 1.5rem;">
+                <div class="talk-box-label">💡 事業所が獲得対象外の場合</div>
+                <div class="talk-content">
+                    今回は代表者様の<span class="highlight">ご自宅も、特別に事業用割引のご案内が可能</span>でして～♪<br>
+                    → 電力会社判別ヒアリングへ
+                </div>
+            </div>
+        </section>
+
+        <!-- 用語集 -->
+        <section class="section" id="glossary">
+            <h2 class="section-title">📚 用語集</h2>
+            
+            <div style="display: grid; gap: 1rem;">
+                <div class="company-card">
+                    <h4>オール電化</h4>
+                    <p>必要なエネルギーすべてを電気で賄っている状態</p>
+                </div>
+                <div class="company-card">
+                    <h4>エコキュート</h4>
+                    <p>電気を使って水を温めてお湯を作り出す給湯器</p>
+                </div>
+                <div class="company-card">
+                    <h4>エネファーム</h4>
+                    <p>家庭用燃料電池。ガスから水素を取り出し、酸素と化学反応させて電気と熱を作るシステム</p>
+                </div>
+                <div class="company-card">
+                    <h4>キュービクル</h4>
+                    <p>事業所の外にある2mぐらいの白い大きい箱。高圧電力を低圧に変換する設備</p>
+                </div>
+                <div class="company-card">
+                    <h4>動力（低圧電力 200V）</h4>
+                    <p>業務用エアコン、冷蔵庫、食洗機、電動シャッター、コンプレッサー等に使用</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 会社情報 -->
+        <section class="section" id="info">
+            <h2 class="section-title">📍 会社情報</h2>
+            
+            <div class="company-info">
+                <div class="company-card">
+                    <h4>MIXED株式会社（ミックス）</h4>
+                    <p>
+                        📞 0800-222-6060<br>
+                        📠 Fax番号なし<br>
+                        🏢 〒542-0082<br>
+                        大阪市中央区島之内2丁目10番36号<br>
+                        大宝島之内ロイヤルハイツ405<br>
+                        🌐 https://mixed.fit/
+                    </p>
+                </div>
+                <div class="company-card">
+                    <h4>NCS株式会社（エヌシーエス）</h4>
+                    <p>
+                        📞 0120-964-380<br>
+                        📠 072-479-8100<br>
+                        🏢 〒597-0001<br>
+                        大阪府貝塚市近木町8-27<br>
+                        大橋水車ビル5階<br>
+                        🌐 https://ncs-design.jp/
+                    </p>
+                </div>
+            </div>
+
+            <div class="talk-box warning" style="margin-top: 1rem;">
+                <div class="talk-box-label">⚠️ 前確の段階では電話番号をお伝えしていません！</div>
+                <div class="talk-content">
+                    <strong>【お客様から聞かれた場合】</strong><br><br>
+                    恐れ入りますが、わたくしどもは<span class="highlight">発信専用ダイヤルのコールセンター</span>から<br>
+                    お電話をお掛けさせていただいておりますので、<br>
+                    お客様から折り返しをいただける電話番号を設けておりません。<br><br>
+                    ご不明点などは<span class="highlight">弊社HPでご確認</span>いただければと思います。<br>
+                    お問い合わせフォームもございますので、何かお手伝いできることがありましたら、<br>
+                    そちらよりお願いいたします。
+                </div>
+            </div>
+        </section>
+
+        <!-- 取り扱い電力会社 -->
+        <section class="section" id="power-company">
+            <h2 class="section-title">🔌 取り扱い電力会社</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-gray);">TVCMなどでお馴染みのBIGネームからお伝えすることで、興味持ってもらう</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="company-card">
+                    <h4>①エネオスでんき</h4>
+                    <p>ガソリンスタンドの</p>
+                </div>
+                <div class="company-card">
+                    <h4>②USENでんき</h4>
+                    <p>U-NEXT HOLDINGSグループ</p>
+                </div>
+                <div class="company-card">
+                    <h4>③エレノバでんき</h4>
+                    <p>フォーバルさんの</p>
+                </div>
+                <div class="company-card">
+                    <h4>④パルパワーでんき</h4>
+                    <p>エネパルのパルパワーでんき</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© MIXED株式会社 営業トークスクリプト マニュアル</p>
+        <p style="margin-top: 0.5rem; font-size: 0.7rem;">最終更新: 2025年12月</p>
+    </footer>
+
+    <script>
+        // アコーディオン機能
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const accordion = header.parentElement;
+                accordion.classList.toggle('open');
+            });
+        });
+
+        // スムーズスクロール（ヘッダー分オフセット）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 140;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
