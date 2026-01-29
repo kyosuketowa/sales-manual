@@ -762,59 +762,6 @@
     </div>
 
     <script>
-        // ========== パスワード保護 ==========
-        (function() {
-            const CORRECT_PASSWORD = 'mix2025';
-            const SESSION_KEY = 'sales_manual_auth';
-
-            const loginScreen = document.getElementById('loginScreen');
-            const appContent = document.getElementById('appContent');
-            const passwordInput = document.getElementById('passwordInput');
-            const loginBtn = document.getElementById('loginBtn');
-            const loginError = document.getElementById('loginError');
-
-            function checkSession() {
-                return sessionStorage.getItem(SESSION_KEY) === 'authenticated';
-            }
-
-            function loginSuccess() {
-                sessionStorage.setItem(SESSION_KEY, 'authenticated');
-                loginScreen.classList.add('hidden');
-                appContent.classList.add('visible');
-                initNavi();
-            }
-
-            function loginFailed() {
-                loginError.classList.add('show');
-                passwordInput.classList.add('error');
-                passwordInput.value = '';
-                passwordInput.focus();
-                setTimeout(() => passwordInput.classList.remove('error'), 400);
-            }
-
-            function verifyPassword() {
-                if (passwordInput.value === CORRECT_PASSWORD) {
-                    loginSuccess();
-                } else {
-                    loginFailed();
-                }
-            }
-
-            if (checkSession()) {
-                loginSuccess();
-            } else {
-                loginScreen.classList.remove('hidden');
-            }
-
-            loginBtn.addEventListener('click', verifyPassword);
-            passwordInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') verifyPassword();
-            });
-            passwordInput.addEventListener('input', () => {
-                loginError.classList.remove('show');
-            });
-        })();
-
         // ========== ナビゲーションシステム ==========
         const STEPS = {
             'step1': {
@@ -1737,6 +1684,59 @@
                 closeModal();
             }
         });
+
+        // ========== パスワード保護（初期化）==========
+        (function() {
+            const CORRECT_PASSWORD = 'mix2025';
+            const SESSION_KEY = 'sales_manual_auth';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const appContent = document.getElementById('appContent');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            function checkSession() {
+                return sessionStorage.getItem(SESSION_KEY) === 'authenticated';
+            }
+
+            function loginSuccess() {
+                sessionStorage.setItem(SESSION_KEY, 'authenticated');
+                loginScreen.classList.add('hidden');
+                appContent.classList.add('visible');
+                initNavi();
+            }
+
+            function loginFailed() {
+                loginError.classList.add('show');
+                passwordInput.classList.add('error');
+                passwordInput.value = '';
+                passwordInput.focus();
+                setTimeout(() => passwordInput.classList.remove('error'), 400);
+            }
+
+            function verifyPassword() {
+                if (passwordInput.value === CORRECT_PASSWORD) {
+                    loginSuccess();
+                } else {
+                    loginFailed();
+                }
+            }
+
+            if (checkSession()) {
+                loginSuccess();
+            } else {
+                loginScreen.classList.remove('hidden');
+            }
+
+            loginBtn.addEventListener('click', verifyPassword);
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') verifyPassword();
+            });
+            passwordInput.addEventListener('input', () => {
+                loginError.classList.remove('show');
+            });
+        })();
     </script>
 </body>
 </html>
