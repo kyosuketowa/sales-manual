@@ -531,48 +531,98 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--bg-white);
+            background: linear-gradient(to top, var(--bg-white) 0%, var(--bg-white) 90%, rgba(255,255,255,0.9) 100%);
             border-top: 1px solid var(--border);
-            padding: 0.75rem 1rem;
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 0.75rem;
             z-index: 99;
-            box-shadow: 0 -2px 10px var(--shadow);
+            box-shadow: 0 -4px 20px var(--shadow);
         }
 
         .nav-btn {
-            padding: 0.75rem 1.5rem;
+            min-width: 120px;
+            min-height: 52px;
+            padding: 0.875rem 1.25rem;
             border: none;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             font-family: 'Noto Sans JP', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .nav-btn.back {
-            background: var(--bg-main);
-            color: var(--text-dark);
+            background: linear-gradient(135deg, #5e5c64 0%, #77767b 100%);
+            color: white;
+            flex: 1;
         }
 
         .nav-btn.back:hover {
-            background: var(--border);
+            background: linear-gradient(135deg, #4a484d 0%, #5e5c64 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .nav-btn.back:disabled {
-            opacity: 0.5;
+            background: var(--border);
+            color: var(--text-gray);
+            opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn.forward {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .nav-btn.forward:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 95, 180, 0.4);
+        }
+
+        .nav-btn.forward:disabled {
+            background: var(--border);
+            color: var(--text-gray);
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .nav-btn.reset {
-            background: #ffe0e0;
+            min-width: auto;
+            padding: 0.75rem;
+            background: rgba(224, 27, 36, 0.1);
             color: var(--secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
         .nav-btn.reset:hover {
-            background: #ffd0d0;
+            background: rgba(224, 27, 36, 0.2);
+        }
+
+        @media (max-width: 400px) {
+            .nav-btn {
+                min-width: 90px;
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+            }
+            .nav-btn.reset {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
         }
 
         /* ========== 終了画面 ========== */
@@ -744,7 +794,8 @@
 
         <nav class="nav-bar">
             <button class="nav-btn back" id="backBtn" disabled>← 戻る</button>
-            <button class="nav-btn reset" id="resetBtn">リセット</button>
+            <button class="nav-btn reset" id="resetBtn">🔄</button>
+            <button class="nav-btn forward" id="forwardBtn" disabled>進む →</button>
         </nav>
     </div>
 
@@ -954,6 +1005,26 @@
                     { text: '結局電気の営業でしょ？', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'justElectric', class: '' }
                 ],
                 helps: [
+                    { id: 'whyElectric', label: '「なんで電気？」', title: '「なんで電気の話なの？」への切り返し', content: `
+                        <div class="modal-talk">
+                            今回の撮影キャンペーン自体が、<span class="highlight">電力会社さんと通信会社さんと協力して</span>ご案内させていただいているものでして、皆さまに<span class="highlight">電気代の無料見積り</span>を取らせていただいております。<br><br>
+                            それによって撮影費用を<span class="highlight">完全無料</span>でご提供できるようになっております♪
+                        </div>
+                        <div class="modal-note">
+                            ポイント：撮影を無料にするための協賛という形で説明する
+                        </div>
+                    `},
+                    { id: 'noAuth', label: '「決裁権がない」', title: '「決裁権がない」への対応', content: `
+                        <div class="modal-talk">
+                            ちなみに、電気やネットのご契約は<span class="highlight">どなたがご判断</span>されますか？<br><br>
+                            （オーナー様/社長様/本部など）<br><br>
+                            その方は本日いらっしゃいますか？または、お電話で確認いただくことは可能でしょうか？
+                        </div>
+                        <div class="modal-note">
+                            ・決裁者が別にいる場合 → その方に繋いでもらう or 再架電予約<br>
+                            ・本部決裁の場合 → 「本部様への確認の仕方をお伝えしますね」
+                        </div>
+                    `},
                     { id: 'justElectric', label: '「結局電気でしょ？」', title: '「結局目的は電気でしょ？」', content: `
                         <div class="modal-talk">
                             いえいえ(感じ良く)、私共は<span class="highlight">撮影会社</span>なので、撮影をさせていただきたいんですが、撮影自体が通常は費用がかかるものだったので、お客様からすると「リスクだ」というお声が沢山あったんですね。<br><br>
@@ -1547,6 +1618,7 @@
 
         let currentStep = 'step1';
         let history = [];
+        let forwardHistory = [];
 
         function initNavi() {
             renderStep(currentStep);
@@ -1563,8 +1635,9 @@
             document.getElementById('stepName').textContent = step.name;
             document.getElementById('progressFill').style.width = step.progress + '%';
 
-            // 戻るボタン
+            // 戻る・進むボタンの状態更新
             document.getElementById('backBtn').disabled = history.length === 0;
+            document.getElementById('forwardBtn').disabled = forwardHistory.length === 0;
 
             // コンテンツ生成
             let html = `<div class="step-card">`;
@@ -1605,18 +1678,29 @@
 
         function goToStep(stepId) {
             history.push(currentStep);
+            forwardHistory = []; // 新しい選択をしたら進む履歴をクリア
             renderStep(stepId);
         }
 
         function goBack() {
             if (history.length > 0) {
+                forwardHistory.push(currentStep); // 現在のステップを進む履歴に追加
                 const prevStep = history.pop();
                 renderStep(prevStep);
             }
         }
 
+        function goForward() {
+            if (forwardHistory.length > 0) {
+                history.push(currentStep); // 現在のステップを戻る履歴に追加
+                const nextStep = forwardHistory.pop();
+                renderStep(nextStep);
+            }
+        }
+
         function resetNavi() {
             history = [];
+            forwardHistory = [];
             currentStep = 'step1';
             renderStep('step1');
         }
@@ -1673,6 +1757,7 @@
 
         // イベントリスナー
         document.getElementById('backBtn').addEventListener('click', goBack);
+        document.getElementById('forwardBtn').addEventListener('click', goForward);
         document.getElementById('resetBtn').addEventListener('click', () => {
             if (confirm('最初からやり直しますか？')) {
                 resetNavi();
