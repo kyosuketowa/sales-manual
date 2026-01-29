@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>架電ナビ | MIXED株式会社</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #3584e4;
+            --secondary: #e01b24;
+            --accent-yellow: #f5c211;
+            --accent-green: #26a269;
+            --accent-purple: #9141ac;
+            --bg-main: #f6f5f4;
+            --bg-white: #ffffff;
+            --text-dark: #241f31;
+            --text-gray: #5e5c64;
+            --border: #deddda;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 16px;
+            min-height: 100vh;
+        }
+
+        /* ========== パスワード保護画面 ========== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a5fb4 0%, #3584e4 50%, #62a0ea 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(26, 95, 180, 0.3);
+        }
+
+        .login-company {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-title {
+            font-size: 1rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .login-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .login-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.1);
+        }
+
+        .login-input.error {
+            border-color: var(--secondary);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 95, 180, 0.4);
+        }
+
+        .login-error {
+            color: var(--secondary);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .app-content {
+            display: none;
+        }
+
+        .app-content.visible {
+            display: block;
+        }
+
+        /* ========== ヘッダー ========== */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* ページ切り替えタブ */
+        .page-tabs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .page-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .page-tab:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .page-tab.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* ========== 進捗バー ========== */
+        .progress-container {
+            background: var(--bg-white);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .step-label {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent-green) 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* ========== メインコンテンツ ========== */
+        .main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+            padding-bottom: 100px;
+        }
+
+        /* ステップカード */
+        .step-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px var(--shadow);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-card.hidden {
+            display: none;
+        }
+
+        .step-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* トーク表示エリア */
+        .talk-display {
+            background: #f8f7f6;
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        .talk-display .highlight {
+            background: linear-gradient(transparent 60%, #fef08a 60%);
+            font-weight: 500;
+        }
+
+        .talk-display.warning {
+            border-left-color: var(--accent-yellow);
+            background: #fffbeb;
+        }
+
+        .talk-display.tip {
+            border-left-color: var(--accent-green);
+            background: #f4fbf7;
+        }
+
+        .talk-note {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-top: 0.5rem;
+        }
+
+        /* 選択肢ボタン */
+        .choices {
+            display: grid;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .choices.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .choice-btn {
+            padding: 1.2rem 1rem;
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--primary);
+            background: #f0f6ff;
+        }
+
+        .choice-btn:active {
+            transform: scale(0.98);
+        }
+
+        .choice-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+        }
+
+        .choice-btn.primary:hover {
+            box-shadow: 0 4px 15px rgba(26, 95, 180, 0.4);
+        }
+
+        .choice-btn.success {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%);
+            color: white;
+            border: none;
+        }
+
+        .choice-btn.warning {
+            background: linear-gradient(135deg, #e5a50a 0%, var(--accent-yellow) 100%);
+            color: white;
+            border: none;
+        }
+
+        .choice-btn.danger {
+            background: linear-gradient(135deg, #c01c28 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+        }
+
+        .choice-btn .btn-sub {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 0.3rem;
+        }
+
+        /* 切り返しヘルプエリア */
+        .help-area {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .help-title {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 0.75rem;
+        }
+
+        .help-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .help-btn {
+            padding: 0.6rem 1rem;
+            background: #fff5f5;
+            border: 1px solid #ffe0e0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .help-btn:hover {
+            background: #ffe0e0;
+        }
+
+        /* ========== モーダル ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-white);
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(80vh - 60px);
+        }
+
+        .modal-talk {
+            background: #f8f7f6;
+            border-left: 4px solid var(--accent-green);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .modal-talk .highlight {
+            background: linear-gradient(transparent 60%, #fef08a 60%);
+            font-weight: 500;
+        }
+
+        .modal-note {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            padding: 0.75rem;
+            background: #fffbeb;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        /* ========== ナビゲーションバー ========== */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+            box-shadow: 0 -2px 10px var(--shadow);
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .nav-btn.back {
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .nav-btn.back:hover {
+            background: var(--border);
+        }
+
+        .nav-btn.back:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.reset {
+            background: #ffe0e0;
+            color: var(--secondary);
+        }
+
+        .nav-btn.reset:hover {
+            background: #ffd0d0;
+        }
+
+        /* ========== 終了画面 ========== */
+        .end-screen {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .end-screen.success {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%);
+            color: white;
+            border-radius: 16px;
+        }
+
+        .end-screen .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .end-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checklist {
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .checklist-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .end-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .end-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .end-btn.primary {
+            background: white;
+            color: var(--accent-green);
+        }
+
+        .end-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* トークパターン切り替え */
+        .pattern-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pattern-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .pattern-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pattern-content {
+            display: none;
+        }
+
+        .pattern-content.active {
+            display: block;
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            .choices.two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .choice-btn {
+                padding: 1rem;
+            }
+
+            .login-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- パスワード保護画面 -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo">🎯</div>
+            <div class="login-company">MIXED株式会社</div>
+            <div class="login-title">架電ナビ</div>
+            <div class="login-input-group">
+                <input type="password" id="passwordInput" class="login-input" placeholder="パスワードを入力" autocomplete="off">
+            </div>
+            <button id="loginBtn" class="login-btn">ログイン</button>
+            <div id="loginError" class="login-error">パスワードが正しくありません</div>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div id="appContent" class="app-content">
+        <header class="header">
+            <div class="header-top">
+                <h1>🎯 架電ナビ</h1>
+            </div>
+            <div class="page-tabs">
+                <a href="index.html" class="page-tab">📖 マニュアル</a>
+                <a href="navi.html" class="page-tab active">🎯 架電ナビ</a>
+            </div>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-info">
+                <span class="step-label" id="stepLabel">STEP 1 / 10</span>
+                <span id="stepName">導入（受付突破）</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+            </div>
+        </div>
+
+        <main class="main" id="mainContent">
+            <!-- ステップはJavaScriptで動的に生成 -->
+        </main>
+
+        <nav class="nav-bar">
+            <button class="nav-btn back" id="backBtn" disabled>← 戻る</button>
+            <button class="nav-btn reset" id="resetBtn">リセット</button>
+        </nav>
+    </div>
+
+    <!-- モーダル -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">切り返しトーク</h3>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 動的に内容を挿入 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== パスワード保護 ==========
+        (function() {
+            const CORRECT_PASSWORD = 'mix2025';
+            const SESSION_KEY = 'sales_manual_auth';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const appContent = document.getElementById('appContent');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            function checkSession() {
+                return sessionStorage.getItem(SESSION_KEY) === 'authenticated';
+            }
+
+            function loginSuccess() {
+                sessionStorage.setItem(SESSION_KEY, 'authenticated');
+                loginScreen.classList.add('hidden');
+                appContent.classList.add('visible');
+                initNavi();
+            }
+
+            function loginFailed() {
+                loginError.classList.add('show');
+                passwordInput.classList.add('error');
+                passwordInput.value = '';
+                passwordInput.focus();
+                setTimeout(() => passwordInput.classList.remove('error'), 400);
+            }
+
+            function verifyPassword() {
+                if (passwordInput.value === CORRECT_PASSWORD) {
+                    loginSuccess();
+                } else {
+                    loginFailed();
+                }
+            }
+
+            if (checkSession()) {
+                loginSuccess();
+            } else {
+                loginScreen.classList.remove('hidden');
+            }
+
+            loginBtn.addEventListener('click', verifyPassword);
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') verifyPassword();
+            });
+            passwordInput.addEventListener('input', () => {
+                loginError.classList.remove('show');
+            });
+        })();
+
+        // ========== ナビゲーションシステム ==========
+        const STEPS = {
+            'step1': {
+                title: 'STEP 1: 導入（受付突破）',
+                name: '導入（受付突破）',
+                progress: 10,
+                content: `
+                    <div class="talk-display">
+                        お忙しいところ恐れ入ります。<br>
+                        <span class="highlight">グーグルマップ撮影会社 ミックスの○○</span>です。<br><br>
+                        〇〇（会社名）の<span class="highlight">代表者様</span>はいらっしゃいますでしょうか？
+                    </div>
+                    <div class="talk-display warning">
+                        <strong>⚠️ ここで会社名をしっかり確認する</strong><br>
+                        <span class="talk-note">電話帳の情報と実際の会社名が違う場合があります</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '代表者につながった', sub: '→ 時間確認へ', next: 'step2', class: 'primary' },
+                    { text: '不在と言われた', sub: '→ 再架電確認', next: 'step1b', class: '' },
+                    { text: '何の件？と聞かれた', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'whatCall', class: '' },
+                    { text: '営業はいらない', sub: '→ 終了', next: 'endRecall', class: 'danger' }
+                ],
+                helps: [
+                    { id: 'whatCall', label: '「何の件？」', title: '「（受付）何の件でしょうか？」への切り返し', content: `
+                        <div class="modal-talk">
+                            <span class="highlight">グーグル掲載の件</span>になりますので、ご不在でしたらまた改めます。失礼いたします。
+                        </div>
+                        <div class="modal-note">
+                            ※それでもしつこく聞いてくる場合<br>
+                            →（企業情報の取り扱いになりまして）代表者様宛の件になりますので、急ぎではないのでまた改めます。失礼いたします。
+                        </div>
+                    `},
+                    { id: 'whatList', label: '「何見てかけてる？」', title: '「何見てかけてるんですか？」への切り返し', content: `
+                        <div class="modal-talk">
+                            <span class="highlight">電子電話帳から順番に</span>ご連絡させて頂いております。
+                        </div>
+                        <div class="modal-note">
+                            ※「リスト」と言うのはNG！<br>
+                            ※非掲載リストの場合：「市外局番から順番にご連絡させて頂いております」
+                        </div>
+                    `}
+                ]
+            },
+            'step1b': {
+                title: 'STEP 1-B: 不在対応',
+                name: '不在対応',
+                progress: 10,
+                content: `
+                    <div class="talk-display">
+                        グーグル掲載の件でのご連絡になりますが<br>
+                        <span class="highlight">お昼か夕方頃</span>には戻られますか？
+                    </div>
+                    <div class="talk-display warning">
+                        <span class="talk-note">※二者択一で聞く（オープンに聞かない）</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '時間を教えてくれた', sub: '→ 再架電予約', next: 'endRecallScheduled', class: 'success' },
+                    { text: 'わからない/教えてくれない', sub: '→ 終了', next: 'endRecall', class: '' }
+                ],
+                helps: []
+            },
+            'step2': {
+                title: 'STEP 2: 時間確認',
+                name: '時間確認',
+                progress: 20,
+                content: `
+                    <div class="talk-display">
+                        Googleマップのお写真の件でお電話させていただいたのですが、<br>
+                        <span class="highlight">只今お時間少し大丈夫でしょうか？</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '大丈夫/どうぞ', sub: '→ Google案内へ', next: 'step3', class: 'primary' },
+                    { text: '今忙しい', sub: '→ 時間確認', action: 'showHelp', helpId: 'busy', class: '' }
+                ],
+                helps: [
+                    { id: 'busy', label: '「今忙しい」', title: '「今忙しい」への対応', content: `
+                        <div class="modal-talk">
+                            お忙しいところ失礼いたしました。<br>
+                            改めてご連絡させていただきたいのですが、<br>
+                            <span class="highlight">本日の夕方か、明日</span>のご都合いかがでしょうか？
+                        </div>
+                        <div class="modal-note">→ 時間を確認して再架電予約へ</div>
+                    `}
+                ]
+            },
+            'step3': {
+                title: 'STEP 3: Google撮影案内',
+                name: 'Google撮影案内',
+                progress: 30,
+                content: `
+                    <div class="talk-display">
+                        今グーグルマップに掲載する事業所の写真を<br>
+                        順々に撮影しておりまして、もちろん<span class="highlight">無料</span>なのですが、<br>
+                        通常通り <span class="highlight">看板や外観だけ</span> の撮影でよろしいでしょうか？<br><br>
+                        （内観も希望されますか？）
+                    </div>
+                `,
+                choices: [
+                    { text: '外観だけでOK', sub: '→ 電気案内へ', next: 'step4', class: 'primary' },
+                    { text: '中も撮ってほしい', sub: '→ 電気案内へ', next: 'step4', class: 'success' },
+                    { text: 'Googleはいらないよ', sub: '→ 別提案へ', next: 'step3b', class: '' },
+                    { text: 'それ何？詳しく', sub: '→ 説明表示', action: 'showHelp', helpId: 'whatGoogle', class: '' }
+                ],
+                helps: [
+                    { id: 'whatGoogle', label: '「ストリートビューと違うの？」', title: 'ストリートビューとの違い', content: `
+                        <div class="modal-talk">
+                            <strong>【ストリートビュー】</strong><br>
+                            今、地図の横に建物の目印としてお写真が載っているのですが、そちらは車による通りすがりの自動撮影となります。<br><br>
+                            <strong>【インドアビュー（今回）】</strong><br>
+                            今回は代表者様お立ち合いの元、お好きな箇所や角度から<span class="highlight">最大8カットまで</span>お撮りさせていただけます♪
+                        </div>
+                    `},
+                    { id: 'whoAreYou', label: '「おたくら何者？」', title: '「おたくら何者なん？」への切り返し', content: `
+                        <div class="modal-talk">
+                            <span class="highlight">グーグル認定のカメラマンが在籍している撮影会社</span>です。
+                        </div>
+                    `}
+                ]
+            },
+            'step3b': {
+                title: 'STEP 3-B: 別提案（電気・ネット）',
+                name: 'Google不要時の提案',
+                progress: 30,
+                content: `
+                    <div class="talk-display">
+                        こちらのほかにも弊社さまざまなキャンペーン中でして、<br>
+                        <span class="highlight">電力会社さんと通信会社さんにご協賛</span>いただいている中で<br>
+                        電気 または お電話回線（インターネット）の<br>
+                        <span class="highlight">事業所割引の無料診断</span>受けていただけるキャンペーンのご用意もございます(^^)<br><br>
+                        料金をきちんとご説明させていただきまして、<br>
+                        お安くなってご納得いただけた場合には、<br>
+                        <span class="highlight">キャッシュバックプレゼント</span>もございます♪
+                    </div>
+                `,
+                choices: [
+                    { text: '興味ある/聞いてみる', sub: '→ 電力判別へ', next: 'step5', class: 'primary' },
+                    { text: 'それもいらない', sub: '→ 終了', next: 'endNotTarget', class: 'danger' },
+                    { text: 'CBいくらもらえる？', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'cashback', class: '' }
+                ],
+                helps: [
+                    { id: 'cashback', label: '「CBいくら？」', title: '「キャッシュバックいくらもらえる？」', content: `
+                        <div class="modal-talk">
+                            ご利用状況や月々の使用量によって変わってきますが・・・<br>
+                            <span class="highlight">1万5千円～最大7万円くらい</span>のキャッシュバックを受けられているお客様が多いですよ♪<br><br>
+                            電気ネットともに、実際切り替えると今よりどれくらいお安くなるか、CBはいくらもらえるのかっていうところを詳しくご説明させていただきたいので、<span class="highlight">明細をご準備いただき、訪問のお時間を作っていただけたら</span>と思います(*^^*)
+                        </div>
+                    `}
+                ]
+            },
+            'step4': {
+                title: 'STEP 4: 電気・ネット見積もり誘導',
+                name: '電気・ネット案内',
+                progress: 40,
+                content: `
+                    <div class="pattern-toggle">
+                        <button class="pattern-btn active" onclick="showPattern(1)">パターン① シンプル</button>
+                        <button class="pattern-btn" onclick="showPattern(2)">パターン② 詳細</button>
+                    </div>
+                    <div class="pattern-content active" id="pattern1">
+                        <div class="talk-display">
+                            撮影はグーグル認定のカメラマンがお伺いするんですが、<br>
+                            今回は<span class="highlight">費用かからないご案内</span>でして、<br><br>
+                            皆さんに撮影の際に一点だけいっしょにお伝えしてたのが、<br>
+                            今すごく高くなってる電気の<span class="highlight">電気代支援の見積だけ</span><br>
+                            電力会社さんと協力してお出ししてたんですね！
+                        </div>
+                    </div>
+                    <div class="pattern-content" id="pattern2">
+                        <div class="talk-display">
+                            撮影はグーグル認定のカメラマンがお伺いするんですが、<br>
+                            今回こちらのキャンペーン自体が、<span class="highlight">電力会社さんと通信会社さんと協力しての</span>ご案内になりますので<br>
+                            費用は<span class="highlight">1円もかからない</span>です♪<br><br>
+                            そこで みなさまに一点だけご協力いただきたいのが、<br>
+                            撮影でお伺いした際に電気料金 or インターネット（お電話回線）の<br>
+                            <span class="highlight">"複数社"無料見積もり</span> を取らせていただいております！
+                        </div>
+                    </div>
+                    <div class="talk-display warning">
+                        <strong>⚠️ このタイミングで決裁確認をする</strong><br>
+                        <span class="talk-note">「電気やネットの契約変更はご自身でご判断できますか？」</span>
+                    </div>
+                `,
+                choices: [
+                    { text: 'わかった/進めて', sub: '→ ネット確認へ', next: 'step4b', class: 'primary' },
+                    { text: 'なんで電気？', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'whyElectric', class: '' },
+                    { text: '決裁権がない', sub: '→ 決裁者確認', action: 'showHelp', helpId: 'noAuth', class: '' },
+                    { text: '結局電気の営業でしょ？', sub: '→ 切り返し表示', action: 'showHelp', helpId: 'justElectric', class: '' }
+                ],
+                helps: [
+                    { id: 'justElectric', label: '「結局電気でしょ？」', title: '「結局目的は電気でしょ？」', content: `
+                        <div class="modal-talk">
+                            いえいえ(感じ良く)、私共は<span class="highlight">撮影会社</span>なので、撮影をさせていただきたいんですが、撮影自体が通常は費用がかかるものだったので、お客様からすると「リスクだ」というお声が沢山あったんですね。<br><br>
+                            なのでお客様には一切費用がかからないように<span class="highlight">電気の会社さんと協力してご案内</span>をさせていただいてるんですね。
+                        </div>
+                        <div class="modal-note">
+                            Q.「なんでそんなことできるの？」<br>
+                            A. 私どもは<span class="highlight">紹介料を電力会社さんや通信会社さんから頂いて</span>まして、そちらをグーグル撮影に充てることができるので、費用を掛けずに撮影が出来るようになっております☆
+                        </div>
+                    `},
+                    { id: 'cameraElectric', label: '「カメラマンが電気説明？」', title: '「カメラマンが電気やネットの説明をするの？」', content: `
+                        <div class="modal-talk">
+                            おっしゃる通りです！<br>
+                            <span class="highlight">エリア担当1名</span>がお伺いさせていただいてます。<br><br>
+                            グーグル認定のカメラマンですが<span class="highlight">電力会社や通信会社の取次業務もさせていただいている</span>ので、そちらの部分もご説明が可能となります。
+                        </div>
+                    `}
+                ]
+            },
+            'step4b': {
+                title: 'STEP 4-B: ネット利用確認',
+                name: 'ネット利用確認',
+                progress: 45,
+                content: `
+                    <div class="talk-display">
+                        更新することで事業所様の情報が正確に掲載されます。<br>
+                        <span class="highlight">ちなみにインターネットのご利用はございますか？</span>
+                    </div>
+                    <div class="talk-display tip">
+                        <span class="talk-note">※利用なくても、ネット回線の契約があるか否かが重要！</span>
+                    </div>
+                `,
+                choices: [
+                    { text: 'ネット使ってる', sub: '→ 電力判別へ（電気+ネット）', next: 'step5', class: 'primary' },
+                    { text: 'ネットは使ってない', sub: '→ 電力判別へ（電気のみ）', next: 'step5', class: '' }
+                ],
+                helps: []
+            },
+            'step5': {
+                title: 'STEP 5: 電力会社判別',
+                name: '電力会社判別',
+                progress: 50,
+                content: `
+                    <div class="talk-display">
+                        ちなみに、代表者様のところは<br>
+                        <span class="highlight">関西電力以外のところで割引って受けられてますか？</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '関西電力のまま', sub: '→ 関電向けヒアリング', next: 'step6a', class: 'primary' },
+                    { text: '他の電力会社に変えてる', sub: '→ 新電力向けヒアリング', next: 'step6b', class: '' },
+                    { text: 'わからない/覚えてない', sub: '→ 関電向けで進行', next: 'step6a', class: '' }
+                ],
+                helps: []
+            },
+            'step6a': {
+                title: 'STEP 6-A: 関西電力ユーザー向け',
+                name: '関電向けヒアリング',
+                progress: 60,
+                content: `
+                    <div class="talk-display">
+                        そうですよね！だったらちょうどよかったです！<br>
+                        今、<span class="highlight">関西電力お使いの方にご案内</span>でして、<br><br>
+                        電気料金に関しましては、去年の夏場から電気代があがっているため、<br>
+                        ちょうど<span class="highlight">"安いね！"</span>とご実感いただける時期なんですね！<br><br>
+                        どの電力会社のサービスやプランが御社様に合うか、<br>
+                        弊社では<span class="highlight">複数社で横並びにして料金を比較</span>していただけまして～
+                    </div>
+                    <div class="talk-display tip">
+                        <strong>❓ ヒアリング</strong><br>
+                        2.3点ほど確認なのですが、<br>
+                        電気の利用料金は、<span class="highlight">毎月だいたいおいくらくらいお支払いでしょうか？</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '1万円以上', sub: '→ オール電化確認', next: 'step6c', class: 'primary' },
+                    { text: '1万円以下', sub: '→ 動力確認', next: 'step6d', class: '' },
+                    { text: '10万円以上/かなり高い', sub: '→ 高圧確認', next: 'step6e', class: 'warning' },
+                    { text: 'わからない', sub: '→ 当て込みヒアリング', action: 'showHelp', helpId: 'guessPrice', class: '' }
+                ],
+                helps: [
+                    { id: 'guessPrice', label: '当て込みヒアリング', title: '電気代を把握していない人への当て込み', content: `
+                        <div class="modal-talk">
+                            だいたいで大丈夫なのですが、<br>
+                            事業所は一般家庭くらいの敷地の広さはございますか？<br>
+                            （はい or それに近い）<br><br>
+                            あとやっぱり朝から夕方くらいまで電気つけたり、<br>
+                            夏場冬場はエアコンを使いますよね？（はい）<br><br>
+                            であれば・・・・<span class="highlight">1万円は超えられている</span>かと思いますので大丈夫です♪
+                        </div>
+                        <div class="modal-note">→ 確認後、「1万円以上」を選択</div>
+                    `},
+                    { id: 'neverChanged', label: '「関電から変えたことない」', title: '「そもそも関電から替えたことがない」', content: `
+                        <div class="modal-talk">
+                            <strong>【スマートメータートーク】</strong><br><br>
+                            そもそも安くなる理由の部分ですが、<br>
+                            現在は関西電力が事業所様の<span class="highlight">メーター交換</span>をさせていただいておりますので、その場に行かなくても使用量の確認ができるようになっておりまして、その影響で<span class="highlight">検針員がまわる必要がなくなった分、人件費が大幅に削減</span>出来ております。<br><br>
+                            今回ご案内しているのは、今お使いの関西電力さんの発電・送電などの電気の供給や設備は<span class="highlight">そのまま</span>で、<span class="highlight">明細発行を担当する会社が変わる</span>ってだけなんですね！
+                        </div>
+                    `},
+                    { id: 'dontWantChange', label: '「電気変わるならいらない」', title: '「でんき変わるならいらない系」', content: `
+                        <div class="modal-talk">
+                            <span class="highlight">電気は変わらない</span>ですよ！<br>
+                            今回ご案内しているのは今お使い関西電力さんの発電・送電などの電気の供給や設備はそのままで、「エネパル」で<span class="highlight">割引を適用するだけ</span>で電気代支援が受けることが出来るんです！
+                        </div>
+                        <div class="modal-note">※エネパルってなに？ → 事業所用の割引をしている新電力会社です。</div>
+                    `},
+                    { id: 'contractChange', label: '「契約変わるんでしょ？」', title: '「契約変わるんでしょ？」', content: `
+                        <div class="modal-talk">
+                            契約というよりは<span class="highlight">窓口</span>になるんですけども、<br>
+                            でんきは「発電」「送電」「明細発行」の大きく3つの業務に分かれるのですが発電、送電の最も大事な部分は関西電力以外出来ないので、もちろんそのままで今回は<span class="highlight">明細発行の窓口の部分だけエネパルが担当</span>するだけで電気代支援を受けていただけます！<br><br>
+                            ですのでなにかあった時の対応も供給変わらないので、関西電力さんから変わりませんのでご安心ください。
+                        </div>
+                    `},
+                    { id: 'middleman', label: '「間に入るの嫌」', title: '「なんか間に入るん嫌や」', content: `
+                        <div class="modal-talk">
+                            あっ！<span class="highlight">間に入るというより役割分担</span>みたいなものでして、電気の供給は今後もずっと関電さんなので、関電さんから直で電気が送られてくるんですね！<br>
+                            なので<span class="highlight">間に入りようがない</span>んですよ！
+                        </div>
+                    `}
+                ]
+            },
+            'step6b': {
+                title: 'STEP 6-B: 新電力ユーザー向け',
+                name: '新電力向けヒアリング',
+                progress: 60,
+                content: `
+                    <div class="talk-display">
+                        そうですよね！だったらちょうどよかったです！<br>
+                        今回そういった方が<span class="highlight">電気代支援の対象</span>でして、<br>
+                        ちなみにどちらの会社さんでご利用でしょうか？
+                    </div>
+                `,
+                choices: [
+                    { text: '会社名を答えてくれた', sub: '→ オール電化確認', next: 'step6c', class: 'primary' },
+                    { text: '覚えてない/わからない', sub: '→ 会社名確認', action: 'showHelp', helpId: 'confirmCompany', class: '' }
+                ],
+                helps: [
+                    { id: 'confirmCompany', label: '会社名確認', title: '会社名確認トーク', content: `
+                        <div class="modal-talk">
+                            「ハルエネでんき」「おトクでんき」「エフエネでんき」ではなかったでしょうか？
+                        </div>
+                        <div class="modal-note">→ 確認できたら「会社名を答えてくれた」を選択</div>
+                    `},
+                    { id: 'backToKanden', label: '「関電に戻した」', title: '「新電力から関電に戻した」', content: `
+                        <div class="modal-talk">
+                            新電力が高騰した影響とかで関電に戻っている方も多いのですが、今って関電さんも同様の<span class="highlight">燃料調整額の値上げを上限なしで</span>行ってますので結果的にまた電気代があがってしまっている状態なんですね。<br><br>
+                            ですので今回は事業所割引で高騰の影響を受けにくいように、<span class="highlight">電気の単価を調整</span>させていただけます。
+                        </div>
+                    `},
+                    { id: 'justChanged', label: '「変えたばっかり」', title: '「変えたばっかりだから」', content: `
+                        <div class="modal-talk">
+                            そうですよね！最近変えられたんですかね？（いつでもOK）<br>
+                            だったら問題ないですよ！<br><br>
+                            今お使いの○○でんきさんで<span class="highlight">違約金が発生した場合も、キャンペーン中なので全額こちらで負担</span>するようになってますのでご安心ください☆
+                        </div>
+                    `},
+                    { id: 'friend', label: '「知り合いで変えた」', title: '「知り合いのところだから・付き合いで変えた」', content: `
+                        <div class="modal-talk">
+                            そうですよね！お知り合いの方が代理店さんなんですかね？（YES）<br>
+                            ちなみに<span class="highlight">最初のお支払いってもう終わってますよね？</span>（YES）<br>
+                            だったら大丈夫ですよ！<br><br>
+                            なぜかと言いますと、最初のお支払いが終わった時点でお知り合いの方には<span class="highlight">紹介料が振り込まれてます</span>ので今お客様がどこに変えてもその方には何の影響もないのでご安心ください☆
+                        </div>
+                        <div class="modal-note">※代理店に知り合いがいる場合に有効なトーク<br>※人情系は正直難しいので見切り付けて自宅案内に切り替え</div>
+                    `},
+                    { id: 'setDiscount', label: '「セット割がある」', title: '「ガス代、携帯代などとセット割引が付いてる」', content: `
+                        <div class="modal-talk">
+                            そちらなんですが、結論<span class="highlight">トータルで見ると今よりお安くなる</span>んですね！<br><br>
+                            どういう事かと言うと、今回ご紹介しているパルパワーでんきに変更しますとおっしゃられてるセット割引はつかなくなってしまうんですね。<br><br>
+                            ただ、その分<span class="highlight">電気料金の方に大幅に割引</span>を付けさせていただいているので結果的に合計で見ると今よりお安くなるんですよ！<br><br>
+                            電気代とガス代（ケータイ代）の合計が今よりもお安くなればご問題ないですよね？☆
+                        </div>
+                    `}
+                ]
+            },
+            'step6c': {
+                title: 'STEP 6-C: オール電化確認',
+                name: 'オール電化確認',
+                progress: 65,
+                content: `
+                    <div class="talk-display">
+                        ありがとうございます。<br>
+                        <span class="highlight">オール電化やエコキュート</span>ではないでしょうか？
+                    </div>
+                `,
+                choices: [
+                    { text: 'なし', sub: '✅ 獲得可能 → 明細確認へ', next: 'step7', class: 'success' },
+                    { text: 'オール電化/エコキュート/エネファームあり', sub: '→ 動力確認へ', next: 'step6d2', class: 'warning' }
+                ],
+                helps: []
+            },
+            'step6d': {
+                title: 'STEP 6-D: 動力確認',
+                name: '動力確認',
+                progress: 65,
+                content: `
+                    <div class="talk-display">
+                        では従量電力（100V）はお安くお使いだと思うのですが♪<br>
+                        ちなみに<span class="highlight">動力（低圧電力 200V）</span>はお使いですか？
+                    </div>
+                    <div class="talk-display tip">
+                        <span class="talk-note">💡 動力の例：業務用エアコン、冷蔵庫、食洗機、電動シャッター、コンプレッサー等</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '動力使ってる', sub: '✅ 獲得可能 → 明細確認へ', next: 'step7', class: 'success' },
+                    { text: '動力なし', sub: '→ オール電化確認', next: 'step6d2', class: '' }
+                ],
+                helps: []
+            },
+            'step6d2': {
+                title: 'STEP 6-D-2: オール電化確認（対象外判定）',
+                name: 'オール電化確認',
+                progress: 65,
+                content: `
+                    <div class="talk-display">
+                        <span class="highlight">オール電化やエコキュート</span>ではないでしょうか？
+                    </div>
+                `,
+                choices: [
+                    { text: 'なし', sub: '✅ 獲得可能（要確認）→ 明細確認へ', next: 'step7', class: 'success' },
+                    { text: 'オール電化/エコキュート/エネファームあり', sub: '電気は対象外 → ネット案内へ', next: 'step8net', class: 'warning' }
+                ],
+                helps: []
+            },
+            'step6e': {
+                title: 'STEP 6-E: 高圧確認',
+                name: '高圧確認',
+                progress: 65,
+                content: `
+                    <div class="talk-display">
+                        <span class="highlight">キュービクル</span>（事業所の外とかに2mぐらいの白い大きい箱）はありますか？
+                    </div>
+                    <div class="talk-display tip">
+                        <span class="talk-note">💡 高圧の可能性が高い事業所：スーパー、ゴルフ場、旅館、工場、温泉、葬祭場、教習所など</span>
+                    </div>
+                `,
+                choices: [
+                    { text: 'ある/あるかも', sub: '→ 高圧詳細ヒアリング', next: 'step6e2', class: '' },
+                    { text: 'ない/わからない', sub: '✅ 獲得可能 → 明細確認へ', next: 'step7', class: 'success' }
+                ],
+                helps: []
+            },
+            'step6e2': {
+                title: 'STEP 6-E-2: 高圧詳細ヒアリング',
+                name: '高圧詳細ヒアリング',
+                progress: 65,
+                content: `
+                    <div class="talk-display">
+                        （ありがとうございます！）<br>
+                        現在すべての電力会社が燃料高騰のあおりを受けていることや、政府の補填が終了したタイミング等は、特に電気代があがるため、いま切り替えの条件が出やすい時期なんですね！<br><br>
+                        高圧お使いの場合は、<span class="highlight">直近1年分の明細（請求書）のご準備</span>をいただいております。<br>
+                        毎月、電力会社さんから届く明細の保管はございますか？
+                    </div>
+                `,
+                choices: [
+                    { text: '明細ある', sub: '→ 更新月確認', action: 'showHelp', helpId: 'renewalMonth', class: 'primary' },
+                    { text: '明細ない/わからない', sub: '→ 確認お願いして再架電', next: 'endRecallScheduled', class: '' }
+                ],
+                helps: [
+                    { id: 'renewalMonth', label: '更新月確認', title: '更新月確認', content: `
+                        <div class="modal-talk">
+                            「ちなみに <span class="highlight">更新月はいつ頃</span>でしょうか？」
+                        </div>
+                        <div class="modal-note">
+                            ・更新のタイミング → ✅ 獲得可能 → 明細確認へ<br>
+                            ・更新月でない → 「電気はまた更新月が近づきましたら、ご提案させていただきますね！」→ ネット案内へ
+                        </div>
+                    `}
+                ]
+            },
+            'step7': {
+                title: 'STEP 7: 明細確認',
+                name: '明細確認',
+                progress: 70,
+                content: `
+                    <div class="talk-display">
+                        ありがとうございます！<br>
+                        ちなみにお料金の確認は、毎月届く <span class="highlight">紙明細（検針票）</span>ですか？<br>
+                        もしくは、携帯やパソコンから <span class="highlight">WEB明細</span>でみられてますか？
+                    </div>
+                `,
+                choices: [
+                    { text: '紙明細', sub: '→ クロージングへ', next: 'step9', class: 'primary' },
+                    { text: 'WEB明細', sub: '→ ID/PW確認後クロージングへ', action: 'showHelp', helpId: 'webBill', class: '' },
+                    { text: 'ネットも一緒に聞きたい', sub: '→ ネット案内へ', next: 'step8net', class: '' }
+                ],
+                helps: [
+                    { id: 'webBill', label: 'WEB明細確認', title: 'WEB明細の場合の確認', content: `
+                        <div class="modal-talk">
+                            「マイページにログインするための<span class="highlight">IDとパスワード</span>はお持ちですか？」
+                        </div>
+                        <div class="modal-note">→ 確認後「紙明細」ボタンでクロージングへ進む</div>
+                    `}
+                ]
+            },
+            'step8net': {
+                title: 'STEP 8: ネット・電話回線案内',
+                name: 'ネット案内',
+                progress: 75,
+                content: `
+                    <div class="talk-display">
+                        電気は替えられないよー！とおっしゃるお客様には、<br>
+                        <span class="highlight">通信会社さまにも協賛</span>いただいているため、<br>
+                        ネット回線やお電話回線の無料見積りをみていただくことでも対応させていただいております♪<br><br>
+                        インターネットに関しましては、すでにNTTでインターネットされているお客様へ、いまお使いの環境などは変わらず月々のご負担である<span class="highlight">固定費削減</span>のご提案ができます♪<br><br>
+                        ちなみに、ネット回線はどちらでお繋ぎでしょうか？
+                    </div>
+                `,
+                choices: [
+                    { text: 'NTT系（フレッツ光等）', sub: '→ NTT系ヒアリング', next: 'step8netA', class: 'primary' },
+                    { text: 'eo光/J:COM/ケーブル系', sub: '→ 切り替え提案', next: 'step8netB', class: '' },
+                    { text: 'アナログ電話のみ', sub: '→ 光電話提案', next: 'step8netC', class: '' },
+                    { text: 'わからない', sub: '→ NTT機器確認', action: 'showHelp', helpId: 'checkNtt', class: '' }
+                ],
+                helps: [
+                    { id: 'checkNtt', label: 'NTT機器確認', title: 'ネット繋いでるけど、どこかわからない場合', content: `
+                        <div class="modal-talk">
+                            ・お電話機の近くに<span class="highlight">黒色のお弁当箱サイズ</span>（手のひらサイズ）のチカチカひかる機械はありますか？<br><br>
+                            → ある場合：「そちらに<span class="highlight">NTTというロゴ</span>はありますか？」<br>
+                            → ある →「そちらがあればNTT光回線でネットお使いです。」<br><br>
+                            ・毎月NTTさんから請求書は届いてないでしょうか？<br>
+                            → 届いている → NTT回線でネットお使いです
+                        </div>
+                        <div class="modal-note">→ 確認後、適切な選択肢を選んでください</div>
+                    `}
+                ]
+            },
+            'step8netA': {
+                title: 'STEP 8-NET-A: NTT光回線系',
+                name: 'NTT系ヒアリング',
+                progress: 80,
+                content: `
+                    <div class="talk-display">
+                        NTT光回線系をお使いなんですね！
+                    </div>
+                    <div class="talk-display tip">
+                        <strong>ヒアリング項目</strong><br>
+                        ・月々おいくらくらいお支払いですか？<br>
+                        ・プロバイダはどちらお使いですか？<br>
+                        ・普段お料金はどのように確認されてますか？<br>
+                        ・明細はありますか？（紙 or WEB？）
+                    </div>
+                `,
+                choices: [
+                    { text: 'ヒアリング完了', sub: '→ クロージングへ', next: 'step9', class: 'success' },
+                    { text: 'ネットもいらない', sub: '→ 対象外', next: 'endNotTarget', class: 'danger' }
+                ],
+                helps: []
+            },
+            'step8netB': {
+                title: 'STEP 8-NET-B: eo光/J:COM等',
+                name: 'eo光等の対応',
+                progress: 80,
+                content: `
+                    <div class="talk-display">
+                        今回はNTT光回線系のインターネット回線の案内となるんですが、<br>
+                        <span class="highlight">お仕事でメールアドレスのご利用</span>ってございますでしょうか？
+                    </div>
+                `,
+                choices: [
+                    { text: 'メール使ってない', sub: '→ NTT切り替え提案', action: 'showHelp', helpId: 'nttSwitch', class: 'primary' },
+                    { text: 'メール使ってる', sub: '→ 切り替え難しい', next: 'endNotTarget', class: '' }
+                ],
+                helps: [
+                    { id: 'nttSwitch', label: 'NTT切り替え提案', title: 'NTT切り替え提案', content: `
+                        <div class="modal-talk">
+                            それであれば、NTTの回線をお使いいただくことで、通信費が今よりおトクにご利用いただけるかもしれませんので、実際にどのくらいお安くなるかお話を聞いていただければと思います！
+                        </div>
+                        <div class="modal-note">
+                            Q.「工事費用や違約金は？」<br>
+                            A. 今回はキャンペーンなので、すべて弊社負担です！
+                        </div>
+                    `}
+                ]
+            },
+            'step8netC': {
+                title: 'STEP 8-NET-C: アナログ回線',
+                name: 'アナログ回線対応',
+                progress: 80,
+                content: `
+                    <div class="talk-display">
+                        アナログのお電話だけでお使いですか？<br><br>
+                        ゆくゆくは<span class="highlight">アナログ回線（通常回線）が廃止</span>となるため、アナログ回線から光回線移行の案内が広まりつつあるのですがお客様のところには、NTTさんやソフトバンクさんからこういう案内のお知らせとかってもう届きましたか？？<br><br>
+                        アナログでお使いいただくより、月々の基本料金も通話料もお安い<span class="highlight">光電話</span>にみなさま順々に切替えていただいてまして、弊社は今回そのご案内が可能となります！
+                    </div>
+                    <div class="talk-display tip">
+                        <span class="talk-note">💡 NTTさんは2026年以降、光回線への切り替えをさらに進める予定です。最終的には、2030年～2035年度を目処に全国的にアナログから光への移行が完了する見込みです。</span>
+                    </div>
+                `,
+                choices: [
+                    { text: '興味ある/聞いてみる', sub: '→ ヒアリング後クロージングへ', next: 'step9', class: 'success' },
+                    { text: 'いらない', sub: '→ 対象外', next: 'endNotTarget', class: '' }
+                ],
+                helps: [
+                    { id: 'cantInstall', label: '「過去に引けないと言われた」', title: '「過去にネット引けないと言われたことがある」', content: `
+                        <div class="modal-talk">
+                            「なぜだめだったか」の理由にもよりますが、そのようにおっしゃるお客様って実は多いんですよ！<br><br>
+                            工事担当者によって判断がさまざまだということも1つの要因なのですが、たとえば作業員の「経験値・その日のスケジュール」などによっても導入できるか否かの結果が左右されるケースが少なくないんですね。<br><br>
+                            ただ弊社では、<span class="highlight">長年お付き合いのある入線専門業者さん</span>にお願いしておりますので、今まで他社さんで"難しい"とされていたお客様でも<span class="highlight">"開通できたよ☆"ってケースが多く</span>大変喜ばれています！
+                        </div>
+                    `}
+                ]
+            },
+            'step9': {
+                title: 'STEP 9: クロージング',
+                name: 'クロージング',
+                progress: 85,
+                content: `
+                    <div class="talk-display">
+                        今回の内容を簡単にまとめると<br><br>
+                        毎月お支払いの（電気料金 ／ ネット料金 ／ お電話回線の料金）が<br>
+                        <span class="highlight">今よりどれくらいお安くなるか</span>見ていただけて<br><br>
+                        【撮影ありの方】📷<br>
+                        <span class="highlight">グーグル撮影も無料で受けていただける</span> というキャンペーンになります♪<br><br>
+                        【撮影なしの方】💰<br>
+                        <span class="highlight">キャッシュバックを受けていただける</span> というキャンペーンになります♪<br><br>
+                        色々お伝えしましたが、今回の内容は<span class="highlight">費用は一切かからない</span>です！
+                    </div>
+                `,
+                choices: [
+                    { text: 'わかった/いいよ', sub: '→ アポ確定へ', next: 'step10', class: 'success' },
+                    { text: 'ハイハイ系/反応薄い', sub: '→ 念押しトーク', action: 'showHelp', helpId: 'pushBack', class: '' },
+                    { text: 'やっぱりいらない', sub: '→ 切り返し or 終了', action: 'showHelp', helpId: 'dontNeed', class: 'danger' }
+                ],
+                helps: [
+                    { id: 'pushBack', label: 'ハイハイ系への念押し', title: 'ハイハイ系への念押しトーク', content: `
+                        <div class="modal-talk">
+                            「ご説明は以上になりますが、<br>
+                            ここまでのキャンペーンについて<span class="highlight">ご不明点はなかったですか？</span>」と軽く念押し。
+                        </div>
+                        <div class="modal-note">→ 確認後「わかった/いいよ」を選択</div>
+                    `},
+                    { id: 'dontNeed', label: '「いらない」への対応', title: 'やっぱりいらないへの対応', content: `
+                        <div class="modal-talk">
+                            <strong>Q.「こっちがなんかすることあるの？・手続きめんどい系」</strong><br>
+                            A. 今回、<span class="highlight">面倒なお手続きは一切ございません！</span><br>
+                            同じようなご心配事をお持ちの事業者様が多くいらっしゃるのですが、実際のところ<span class="highlight">"無料サポート"でカバー</span>できておりますのでご安心ください☆
+                        </div>
+                    `},
+                    { id: 'bankruptcy', label: '「新電力は倒産が心配」', title: '「新電力会社の倒産や事業撤退を気にしてる」', content: `
+                        <div class="modal-talk">
+                            そうなんですよ〜！お客様が仰る通り、ここ1.2年の燃料高騰のあおりを受けて倒産されてる会社さんもあるのですが<br><br>
+                            <strong>【ハルとくの場合】</strong><br>
+                            今回私どもがご紹介してるハルとくでんきは、事業所様向けに割引をご案内してる会社の中で<span class="highlight">シェアが1位</span>の会社なんですね！母体の会社も（光通信っていう）<span class="highlight">東証プライム上場</span>の大きい会社になりますので、そのあたりはみなさん安心して割引を受けていただいてます〜！
+                        </div>
+                    `}
+                ]
+            },
+            'step10': {
+                title: 'STEP 10: アポ確定',
+                name: 'アポ確定',
+                progress: 95,
+                content: `
+                    <div class="talk-display">
+                        それではこの後、本日中に（連休明けから順番に）<br>
+                        撮影部署の者から <span class="highlight">簡単なご確認・訪問の日時を決めるお電話</span>がもう一本入りますので、そちらだけご対応お願いします(*^^*)
+                    </div>
+                `,
+                choices: [
+                    { text: 'わかった', sub: '→ 名前確認へ', action: 'showHelp', helpId: 'getName', class: 'success' },
+                    { text: 'このあと出掛ける/忙しい', sub: '→ 携帯番号確認', action: 'showHelp', helpId: 'getMobile', class: '' }
+                ],
+                helps: [
+                    { id: 'getName', label: '名前確認', title: '名前確認 → 完了！', content: `
+                        <div class="modal-talk">
+                            私〇〇と申しますが失礼がないようにお電話口様の<span class="highlight">お名前</span>をお伺いしてよろしいですか？<br><br>
+                            では〇〇様宛にお電話いたしますので、ご対応だけお願いいたします。<br>
+                            では失礼致します、ありがとうございました☆<br><br>
+                            <strong>（最後まで丁寧に！）</strong>
+                        </div>
+                        <div class="modal-note" style="background: #d3f9d8; color: #1b5e20;">→ 確認完了後、モーダルを閉じて「🎉 アポ獲得！」へ</div>
+                    `},
+                    { id: 'getMobile', label: '携帯番号確認', title: '携帯番号確認', content: `
+                        <div class="modal-talk">
+                            差し支えがなければ<span class="highlight">携帯番号</span>をお伺いできますでしょうか？<br>
+                            そちらにお掛けさせていただきますね！
+                        </div>
+                        <div class="modal-note">※携帯の番号は、留守軽減のためなるべく聞いてください。<br>→ 確認後、名前確認へ</div>
+                    `}
+                ],
+                nextAfterHelp: 'endSuccess'
+            },
+            'endSuccess': {
+                title: '🎉 アポ獲得！',
+                name: 'アポ獲得完了',
+                progress: 100,
+                isEnd: true,
+                endType: 'success',
+                content: `
+                    <div class="end-screen success">
+                        <div class="icon">🎉</div>
+                        <h2>アポ受注完了！<br>お疲れ様でした</h2>
+                        <div class="checklist">
+                            <div class="checklist-item">☑ 会社名：___________________</div>
+                            <div class="checklist-item">☑ 担当者名：___________________</div>
+                            <div class="checklist-item">☑ 電話番号：___________________</div>
+                            <div class="checklist-item">☑ 携帯番号：___________________</div>
+                            <div class="checklist-item">☑ 案内内容：□電気 □ネット □電話回線</div>
+                            <div class="checklist-item">☑ 明細：□紙 □WEB（ID/PW確認済）</div>
+                            <div class="checklist-item">☑ 撮影：□あり □なし（CB案内）</div>
+                        </div>
+                        <div class="end-buttons">
+                            <button class="end-btn primary" onclick="resetNavi()">🔄 最初から</button>
+                            <a href="index.html" class="end-btn secondary" style="text-decoration:none;">📖 マニュアル</a>
+                        </div>
+                    </div>
+                `,
+                choices: [],
+                helps: []
+            },
+            'endNotTarget': {
+                title: '対象外',
+                name: '対象外終了',
+                progress: 100,
+                isEnd: true,
+                endType: 'notTarget',
+                content: `
+                    <div class="step-card">
+                        <div class="step-title">📋 対象外</div>
+                        <div class="talk-display">
+                            現状どちらもお安くご利用いただいていらっしゃいますので、<br>
+                            <span class="highlight">今回はご案内控えさせていただきます。</span><br>
+                            お時間いただき、ありがとうございました！<br><br>
+                            新たなキャンペーンが出ましたら、その時はご連絡させていただきたいと思います！<br>
+                            またご機会があればお願いいたします♪<br><br>
+                            <strong>（最後まで丁寧に）</strong>
+                        </div>
+                    </div>
+                `,
+                choices: [
+                    { text: '🔄 最初からやり直す', next: 'step1', class: 'primary' },
+                    { text: '🏠 代表者自宅案内を試す', sub: '→ 電力判別から', action: 'showHelp', helpId: 'homeOffer', class: '' }
+                ],
+                helps: [
+                    { id: 'homeOffer', label: '自宅案内', title: '代表者自宅案内トーク', content: `
+                        <div class="modal-talk">
+                            「今回は代表者様の<span class="highlight">ご自宅も、特別に事業用割引のご案内が可能</span>でして〜♪」
+                        </div>
+                        <div class="modal-note">→ STEP 5（電力会社判別）から再開</div>
+                    `}
+                ]
+            },
+            'endRecall': {
+                title: '再架電',
+                name: '再架電終了',
+                progress: 100,
+                isEnd: true,
+                endType: 'recall',
+                content: `
+                    <div class="step-card">
+                        <div class="step-title">📞 再架電リストに追加</div>
+                        <div class="talk-display tip">
+                            <strong>メモ</strong><br>
+                            ・会社名：___________________<br>
+                            ・再架電日時：___________________<br>
+                            ・備考：___________________
+                        </div>
+                    </div>
+                `,
+                choices: [
+                    { text: '🔄 最初からやり直す', next: 'step1', class: 'primary' }
+                ],
+                helps: []
+            },
+            'endRecallScheduled': {
+                title: '再架電予約',
+                name: '再架電予約完了',
+                progress: 100,
+                isEnd: true,
+                endType: 'recallScheduled',
+                content: `
+                    <div class="step-card">
+                        <div class="step-title">📅 再架電予約完了</div>
+                        <div class="talk-display success">
+                            <strong>再架電予約を記録してください</strong><br><br>
+                            ・会社名：___________________<br>
+                            ・担当者名：___________________<br>
+                            ・再架電日時：___________________<br>
+                            ・備考：___________________
+                        </div>
+                    </div>
+                `,
+                choices: [
+                    { text: '🔄 最初からやり直す', next: 'step1', class: 'primary' }
+                ],
+                helps: []
+            }
+        };
+
+        let currentStep = 'step1';
+        let history = [];
+
+        function initNavi() {
+            renderStep(currentStep);
+        }
+
+        function renderStep(stepId) {
+            const step = STEPS[stepId];
+            if (!step) return;
+
+            currentStep = stepId;
+
+            // 進捗更新
+            document.getElementById('stepLabel').textContent = step.title.split(':')[0];
+            document.getElementById('stepName').textContent = step.name;
+            document.getElementById('progressFill').style.width = step.progress + '%';
+
+            // 戻るボタン
+            document.getElementById('backBtn').disabled = history.length === 0;
+
+            // コンテンツ生成
+            let html = `<div class="step-card">`;
+            html += `<div class="step-title">${step.title}</div>`;
+            html += step.content;
+
+            // 選択肢
+            if (step.choices && step.choices.length > 0) {
+                const colClass = step.choices.length === 2 ? 'two-col' : '';
+                html += `<div class="choices ${colClass}">`;
+                step.choices.forEach((choice, index) => {
+                    const classStr = choice.class || '';
+                    if (choice.action === 'showHelp') {
+                        html += `<button class="choice-btn ${classStr}" onclick="showHelp('${choice.helpId}')">${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                    } else if (choice.next) {
+                        html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}')">${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                    }
+                });
+                html += `</div>`;
+            }
+
+            // 切り返しヘルプ
+            if (step.helps && step.helps.length > 0) {
+                html += `<div class="help-area">`;
+                html += `<div class="help-title">💬 困ったらタップ</div>`;
+                html += `<div class="help-buttons">`;
+                step.helps.forEach(help => {
+                    html += `<button class="help-btn" onclick="showHelp('${help.id}')">${help.label}</button>`;
+                });
+                html += `</div></div>`;
+            }
+
+            html += `</div>`;
+
+            document.getElementById('mainContent').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        function goToStep(stepId) {
+            history.push(currentStep);
+            renderStep(stepId);
+        }
+
+        function goBack() {
+            if (history.length > 0) {
+                const prevStep = history.pop();
+                renderStep(prevStep);
+            }
+        }
+
+        function resetNavi() {
+            history = [];
+            currentStep = 'step1';
+            renderStep('step1');
+        }
+
+        function showHelp(helpId) {
+            const step = STEPS[currentStep];
+            let helpData = null;
+
+            if (step.helps) {
+                helpData = step.helps.find(h => h.id === helpId);
+            }
+
+            if (!helpData) {
+                // 他のステップからも検索
+                for (const key in STEPS) {
+                    const s = STEPS[key];
+                    if (s.helps) {
+                        const found = s.helps.find(h => h.id === helpId);
+                        if (found) {
+                            helpData = found;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (helpData) {
+                document.getElementById('modalTitle').textContent = helpData.title;
+                document.getElementById('modalBody').innerHTML = helpData.content;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+
+            // step10の場合、モーダルを閉じた後にendSuccessへ
+            if (currentStep === 'step10') {
+                const step = STEPS[currentStep];
+                if (step.nextAfterHelp) {
+                    goToStep(step.nextAfterHelp);
+                }
+            }
+        }
+
+        function showPattern(num) {
+            document.querySelectorAll('.pattern-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === num - 1);
+            });
+            document.querySelectorAll('.pattern-content').forEach((content, i) => {
+                content.classList.toggle('active', i === num - 1);
+            });
+        }
+
+        // イベントリスナー
+        document.getElementById('backBtn').addEventListener('click', goBack);
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (confirm('最初からやり直しますか？')) {
+                resetNavi();
+            }
+        });
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
