@@ -2834,6 +2834,15 @@
         let currentCallInfo = { company: '', phone: '' };
         let confirmCallback = null;
 
+        // 架電ログ関連変数（TDZ回避のため先に宣言）
+        const LOG_STORAGE_KEY = 'call_logs';
+        const CALLERS_STORAGE_KEY = 'callers';
+        const MAX_LOGS = 100;
+        let callLogs = [];
+        let callers = [];
+        let currentCallData = null;
+        let selectedLogIndex = null;
+
         // フェーズ情報
         const PHASES = {
             intro: { icon: '📍', text: '導入フェーズ', task: '受付を突破する' },
@@ -2859,6 +2868,10 @@
         }
 
         function initNavi() {
+            // 架電者データを先に読み込む
+            const stored = localStorage.getItem(CALLERS_STORAGE_KEY);
+            callers = stored ? JSON.parse(stored) : [];
+
             showCallerSelectScreen();
             checkTutorial();
         }
@@ -3226,15 +3239,6 @@
         })();
 
         // ========== 架電ログ機能 ==========
-        const LOG_STORAGE_KEY = 'call_logs';
-        const CALLERS_STORAGE_KEY = 'callers';
-        const MAX_LOGS = 100;
-
-        let callLogs = [];
-        let callers = [];
-        let currentCallData = null;
-        let selectedLogIndex = null;
-
         // 初期化
         function initLogSystem() {
             loadCallers();
