@@ -416,9 +416,185 @@
         .section {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* ========== パスワード保護画面 ========== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a5fb4 0%, #3584e4 50%, #62a0ea 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(26, 95, 180, 0.3);
+        }
+
+        .login-company {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-title {
+            font-size: 1rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .login-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .login-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.1);
+        }
+
+        .login-input.error {
+            border-color: var(--secondary);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 95, 180, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            color: var(--secondary);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .app-content {
+            display: none;
+        }
+
+        .app-content.visible {
+            display: block;
+        }
+
+        /* スマホ対応（ログイン画面） */
+        @media (max-width: 600px) {
+            .login-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .login-company {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- パスワード保護画面 -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo">📖</div>
+            <div class="login-company">MIXED株式会社</div>
+            <div class="login-title">営業マニュアル</div>
+            <div class="login-input-group">
+                <input type="password" id="passwordInput" class="login-input" placeholder="パスワードを入力" autocomplete="off">
+            </div>
+            <button id="loginBtn" class="login-btn">ログイン</button>
+            <div id="loginError" class="login-error">パスワードが正しくありません</div>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div id="appContent" class="app-content">
     <header class="header">
         <h1>📞 営業トークスクリプト マニュアル</h1>
         <p>Google撮影 × 電気・ネット案内 | MIXED株式会社</p>
@@ -1422,8 +1598,76 @@
         <p>© MIXED株式会社 営業トークスクリプト マニュアル</p>
         <p style="margin-top: 0.5rem; font-size: 0.7rem;">最終更新: 2025年12月</p>
     </footer>
+    </div><!-- /app-content -->
 
     <script>
+        // ========== パスワード保護機能 ==========
+        (function() {
+            const CORRECT_PASSWORD = 'mix2025';
+            const SESSION_KEY = 'sales_manual_auth';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const appContent = document.getElementById('appContent');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            // セッション確認
+            function checkSession() {
+                return sessionStorage.getItem(SESSION_KEY) === 'authenticated';
+            }
+
+            // ログイン成功処理
+            function loginSuccess() {
+                sessionStorage.setItem(SESSION_KEY, 'authenticated');
+                loginScreen.classList.add('hidden');
+                appContent.classList.add('visible');
+            }
+
+            // ログイン失敗処理
+            function loginFailed() {
+                loginError.classList.add('show');
+                passwordInput.classList.add('error');
+                passwordInput.value = '';
+                passwordInput.focus();
+
+                // エラー表示をリセット
+                setTimeout(() => {
+                    passwordInput.classList.remove('error');
+                }, 400);
+            }
+
+            // パスワード検証
+            function verifyPassword() {
+                const inputPassword = passwordInput.value;
+                if (inputPassword === CORRECT_PASSWORD) {
+                    loginSuccess();
+                } else {
+                    loginFailed();
+                }
+            }
+
+            // 初期化
+            if (checkSession()) {
+                loginSuccess();
+            } else {
+                loginScreen.classList.remove('hidden');
+            }
+
+            // イベントリスナー
+            loginBtn.addEventListener('click', verifyPassword);
+
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyPassword();
+                }
+            });
+
+            // 入力時にエラーメッセージを隠す
+            passwordInput.addEventListener('input', function() {
+                loginError.classList.remove('show');
+            });
+        })();
         // アコーディオン機能
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
