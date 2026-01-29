@@ -331,6 +331,149 @@
             cursor: not-allowed;
         }
 
+        /* 会社名入力グループ */
+        .company-input-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .company-input-group select {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            background: white;
+        }
+
+        .company-input-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .company-input-group #companyTypeSelect {
+            flex: 0 0 auto;
+            min-width: 100px;
+        }
+
+        .company-input-group #companyTypePosition {
+            flex: 0 0 auto;
+            width: 60px;
+        }
+
+        .company-input-group #companyNameInput {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* 架電者ボタンの削除機能 */
+        .caller-btn {
+            position: relative;
+        }
+
+        .caller-btn .delete-icon {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .caller-btn:hover .delete-icon {
+            opacity: 1;
+        }
+
+        .caller-btn.add-new .delete-icon {
+            display: none;
+        }
+
+        /* 架電情報ヘッダー */
+        .call-info-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a56db 100%);
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .call-info-header .company-name {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .call-info-header .call-meta {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* 自動入力済み表示 */
+        .auto-filled-section {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .auto-filled-section h4 {
+            color: var(--primary);
+            margin: 0 0 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .auto-filled-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #e0e7ff;
+            font-size: 0.95rem;
+        }
+
+        .auto-filled-item:last-child {
+            border-bottom: none;
+        }
+
+        .auto-filled-item .label {
+            color: var(--text-gray);
+            min-width: 80px;
+        }
+
+        .auto-filled-item .value {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .auto-filled-item .checkbox-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .auto-filled-item .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
         /* ========== 進捗バー（改善版） ========== */
         .progress-container {
             background: var(--bg-white);
@@ -1840,7 +1983,21 @@
                 <div class="caller-input-section">
                     <div class="form-row">
                         <label class="form-label">会社名<span class="required">*</span></label>
-                        <input type="text" class="form-input" id="companyNameInput" placeholder="例：株式会社○○">
+                        <div class="company-input-group">
+                            <select id="companyTypeSelect" onchange="updateStartButton()">
+                                <option value="">なし</option>
+                                <option value="株式会社">株式会社</option>
+                                <option value="有限会社">有限会社</option>
+                                <option value="合同会社">合同会社</option>
+                                <option value="合資会社">合資会社</option>
+                                <option value="個人事業主">個人事業主</option>
+                            </select>
+                            <select id="companyTypePosition">
+                                <option value="before">前</option>
+                                <option value="after">後</option>
+                            </select>
+                            <input type="text" class="form-input" id="companyNameInput" placeholder="会社名">
+                        </div>
                     </div>
                     <div class="form-row">
                         <label class="form-label">電話番号</label>
@@ -1854,6 +2011,14 @@
 
         <!-- ステップ画面 -->
         <div id="stepScreen" style="display: none;">
+            <!-- 架電情報ヘッダー -->
+            <div class="call-info-header" id="callInfoHeader">
+                <div class="company-name">
+                    <span>📞</span>
+                    <span id="headerCompanyName">会社名</span>
+                </div>
+                <div class="call-meta" id="headerCallMeta"></div>
+            </div>
             <div class="progress-container" id="progressContainer">
                 <div class="progress-phase">
                     <span class="progress-phase-icon" id="phaseIcon">📍</span>
@@ -2125,9 +2290,9 @@
                     </div>
                 `,
                 choices: [
-                    { text: '外観だけでOK', sub: '→ 電気案内へ', next: 'step4', class: 'primary' },
-                    { text: '中も撮ってほしい', sub: '→ 電気案内へ', next: 'step4', class: 'success' },
-                    { text: 'Googleはいらないよ', sub: '→ 別提案へ', next: 'step3b', class: '' },
+                    { text: '外観だけでOK', sub: '→ 電気案内へ', next: 'step4', class: 'primary', track: { photoPreference: '外観のみ' } },
+                    { text: '中も撮ってほしい', sub: '→ 電気案内へ', next: 'step4', class: 'success', track: { photoPreference: '外観+内観' } },
+                    { text: 'Googleはいらないよ', sub: '→ 別提案へ', next: 'step3b', class: '', track: { photoPreference: 'なし' } },
                     { text: 'それ何？詳しく', sub: '→ 説明表示', action: 'showHelp', helpId: 'whatGoogle', class: '' }
                 ],
                 helps: [
@@ -2269,8 +2434,8 @@
                     </div>
                 `,
                 choices: [
-                    { text: 'ネット使ってる', sub: '→ 電力判別へ（電気+ネット）', next: 'step5', class: 'primary' },
-                    { text: 'ネットは使ってない', sub: '→ 電力判別へ（電気のみ）', next: 'step5', class: '' }
+                    { text: 'ネット使ってる', sub: '→ 電力判別へ（電気+ネット）', next: 'step5', class: 'primary', track: { services: ['電気', 'ネット'] } },
+                    { text: 'ネットは使ってない', sub: '→ 電力判別へ（電気のみ）', next: 'step5', class: '', track: { services: ['電気'] } }
                 ],
                 helps: []
             },
@@ -2520,18 +2685,31 @@
                     </div>
                 `,
                 choices: [
-                    { text: '紙明細', sub: '→ クロージングへ', next: 'step9', class: 'primary' },
-                    { text: 'WEB明細', sub: '→ ID/PW確認後クロージングへ', action: 'showHelp', helpId: 'webBill', class: '' },
+                    { text: '紙明細', sub: '→ クロージングへ', next: 'step9', class: 'primary', track: { receiptType: '紙' } },
+                    { text: 'WEB明細', sub: '→ ID/PW確認へ', next: 'step8web', class: '', track: { receiptType: 'WEB' } },
                     { text: 'ネットも一緒に聞きたい', sub: '→ ネット案内へ', next: 'step8net', class: '' }
                 ],
-                helps: [
-                    { id: 'webBill', label: 'WEB明細確認', title: 'WEB明細の場合の確認', content: `
-                        <div class="modal-talk">
-                            「マイページにログインするための<span class="highlight">IDとパスワード</span>はお持ちですか？」
-                        </div>
-                        <div class="modal-note">→ 確認後「紙明細」ボタンでクロージングへ進む</div>
-                    `}
-                ]
+                helps: []
+            },
+            'step8web': {
+                title: 'STEP 8: WEB明細確認',
+                name: 'WEB明細確認',
+                progress: 75,
+                content: `
+                    <div class="talk-display">
+                        マイページにログインするための<span class="highlight">IDとパスワード</span>はお持ちですか？
+                    </div>
+                    <div class="talk-display tip">
+                        <strong>確認ポイント</strong><br>
+                        ・ログインID（メールアドレス等）<br>
+                        ・パスワード
+                    </div>
+                `,
+                choices: [
+                    { text: 'ID/PW確認OK', sub: '→ クロージングへ', next: 'step9', class: 'primary' },
+                    { text: 'わからない/確認できない', sub: '→ 紙明細で案内', next: 'step9', class: '', track: { receiptType: '紙' } }
+                ],
+                helps: []
             },
             'step8net': {
                 title: 'STEP 8: ネット・電話回線案内',
@@ -2831,7 +3009,6 @@
         let history = [];
         let forwardHistory = [];
         let selectedCaller = '';
-        let currentCallInfo = { company: '', phone: '' };
         let confirmCallback = null;
 
         // 架電ログ関連変数（TDZ回避のため先に宣言）
@@ -2842,6 +3019,52 @@
         let callers = [];
         let currentCallData = null;
         let selectedLogIndex = null;
+
+        // セッション変数での情報管理
+        let callSession = {
+            caller: '',
+            company: '',
+            companyType: '',
+            companyTypePosition: 'before',
+            phone: '',
+            contactName: '',
+            mobilePhone: '',
+            services: [],
+            receiptType: '',
+            photoPreference: '',
+            memo: '',
+            result: '',
+            recallDate: '',
+            startTime: ''
+        };
+
+        function resetCallSession() {
+            callSession = {
+                caller: '',
+                company: '',
+                companyType: '',
+                companyTypePosition: 'before',
+                phone: '',
+                contactName: '',
+                mobilePhone: '',
+                services: [],
+                receiptType: '',
+                photoPreference: '',
+                memo: '',
+                result: '',
+                recallDate: '',
+                startTime: ''
+            };
+        }
+
+        function getFullCompanyName() {
+            if (!callSession.companyType) return callSession.company;
+            if (callSession.companyTypePosition === 'before') {
+                return callSession.companyType + callSession.company;
+            } else {
+                return callSession.company + callSession.companyType;
+            }
+        }
 
         // フェーズ情報
         const PHASES = {
@@ -2900,11 +3123,30 @@
             let html = '';
             callers.forEach(c => {
                 const selected = c === selectedCaller ? 'selected' : '';
-                html += `<button class="caller-btn ${selected}" onclick="selectCaller('${c}')">${c}</button>`;
+                const escapedName = c.replace(/'/g, "\\'");
+                html += `<button class="caller-btn ${selected}" onclick="selectCaller('${escapedName}')">
+                    ${c}
+                    <span class="delete-icon" onclick="event.stopPropagation(); confirmDeleteCaller('${escapedName}')">×</span>
+                </button>`;
             });
             html += `<button class="caller-btn add-new" onclick="showAddCallerPrompt()">+ 新規追加</button>`;
             container.innerHTML = html;
             updateStartButton();
+        }
+
+        function confirmDeleteCaller(name) {
+            if (confirm(`「${name}」さんを削除しますか？`)) {
+                deleteCaller(name);
+            }
+        }
+
+        function deleteCaller(name) {
+            callers = callers.filter(c => c !== name);
+            if (selectedCaller === name) {
+                selectedCaller = '';
+            }
+            saveCallers();
+            renderCallerButtons();
         }
 
         function selectCaller(name) {
@@ -2928,9 +3170,18 @@
         }
 
         function startCall() {
-            currentCallInfo.company = document.getElementById('companyNameInput').value.trim();
-            currentCallInfo.phone = document.getElementById('phoneNumberInput').value.trim();
-            currentCallInfo.startTime = new Date().toISOString();
+            // callSessionを初期化して入力値を保存
+            resetCallSession();
+            callSession.caller = selectedCaller;
+            callSession.company = document.getElementById('companyNameInput').value.trim();
+            callSession.companyType = document.getElementById('companyTypeSelect').value;
+            callSession.companyTypePosition = document.getElementById('companyTypePosition').value;
+            callSession.phone = document.getElementById('phoneNumberInput').value.trim();
+            callSession.startTime = new Date().toISOString();
+
+            // ヘッダーに会社情報を表示
+            document.getElementById('headerCompanyName').textContent = getFullCompanyName();
+            document.getElementById('headerCallMeta').textContent = callSession.phone || '';
 
             document.getElementById('callerSelectScreen').classList.remove('visible');
             document.getElementById('stepScreen').style.display = 'block';
@@ -3003,15 +3254,20 @@
                 step.choices.forEach((choice, index) => {
                     const classStr = choice.class || '';
                     const isEndChoice = choice.next && (choice.next.startsWith('end') || choice.class === 'danger');
-                    const recommend = index === 0 && choice.class === 'primary' ? '<span class="recommend-badge">おすすめ</span>' : '';
+                    const recommend = index === 0 && choice.class === 'primary' ? '<span class="recommend-badge">よくある回答</span>' : '';
+                    const trackJson = choice.track ? JSON.stringify(choice.track).replace(/"/g, '&quot;') : '';
 
                     if (choice.action === 'showHelp') {
                         html += `<button class="choice-btn ${classStr}" onclick="showHelp('${choice.helpId}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
                     } else if (choice.next) {
                         if (isEndChoice && !choice.next.startsWith('step')) {
-                            html += `<button class="choice-btn ${classStr}" onclick="confirmEndAction('${choice.next}', '${choice.text}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                            html += `<button class="choice-btn ${classStr}" onclick="confirmEndAction('${choice.next}', '${choice.text}', ${trackJson || 'null'})">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
                         } else {
-                            html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                            if (trackJson) {
+                                html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}', ${trackJson})">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                            } else {
+                                html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                            }
                         }
                     }
                 });
@@ -3040,11 +3296,11 @@
             window.scrollTo(0, 0);
         }
 
-        function confirmEndAction(nextStep, actionText) {
+        function confirmEndAction(nextStep, actionText, trackData) {
             document.getElementById('confirmIcon').textContent = '⚠️';
             document.getElementById('confirmTitle').textContent = '確認';
             document.getElementById('confirmMessage').textContent = `「${actionText}」を選択しますか？`;
-            confirmCallback = () => goToStep(nextStep);
+            confirmCallback = () => goToStep(nextStep, trackData);
             document.getElementById('confirmModal').classList.add('show');
         }
 
@@ -3068,7 +3324,27 @@
             document.getElementById('helpPanel').classList.remove('show');
         }
 
-        function goToStep(stepId) {
+        function goToStep(stepId, trackData) {
+            // トラッキングデータがあればcallSessionを更新
+            if (trackData) {
+                if (trackData.services) {
+                    callSession.services = trackData.services;
+                }
+                if (trackData.addService) {
+                    if (!callSession.services.includes(trackData.addService)) {
+                        callSession.services.push(trackData.addService);
+                    }
+                }
+                if (trackData.receiptType) {
+                    callSession.receiptType = trackData.receiptType;
+                }
+                if (trackData.photoPreference) {
+                    callSession.photoPreference = trackData.photoPreference;
+                }
+                if (trackData.result) {
+                    callSession.result = trackData.result;
+                }
+            }
             history.push(currentStep);
             forwardHistory = [];
             renderStep(stepId);
@@ -3092,10 +3368,13 @@
 
         function resetNavi() {
             if (confirm('最初からやり直しますか？')) {
+                resetCallSession();
                 showCallerSelectScreen();
                 selectedCaller = '';
                 document.getElementById('companyNameInput').value = '';
                 document.getElementById('phoneNumberInput').value = '';
+                document.getElementById('companyTypeSelect').value = '';
+                document.getElementById('companyTypePosition').value = 'before';
             }
         }
 
@@ -3396,9 +3675,52 @@
 
         // アポ獲得用追加フォーム
         function generateSuccessForm() {
+            const hasElectric = callSession.services.includes('電気');
+            const hasNet = callSession.services.includes('ネット');
+            const receiptPaper = callSession.receiptType === '紙' ? 'checked' : '';
+            const receiptWeb = callSession.receiptType === 'WEB' ? 'checked' : '';
+            const photoYes = callSession.photoPreference && callSession.photoPreference !== 'なし' ? 'checked' : '';
+            const photoNo = callSession.photoPreference === 'なし' ? 'checked' : '';
+
             return `
                 <div class="call-start-form" style="margin-top: 1rem;">
-                    <h3>📝 アポ情報を入力</h3>
+                    <!-- 自動入力済み情報 -->
+                    <div class="auto-filled-section">
+                        <h4>📋 自動入力済み（変更可能）</h4>
+                        <div class="auto-filled-item">
+                            <span class="label">会社名</span>
+                            <span class="value">${getFullCompanyName()}</span>
+                        </div>
+                        <div class="auto-filled-item">
+                            <span class="label">電話番号</span>
+                            <span class="value">${callSession.phone || '未入力'}</span>
+                        </div>
+                        <div class="auto-filled-item">
+                            <span class="label">案内内容</span>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="serviceElectric" ${hasElectric ? 'checked' : ''}> 電気</label>
+                                <label><input type="checkbox" id="serviceNet" ${hasNet ? 'checked' : ''}> ネット</label>
+                                <label><input type="checkbox" id="servicePhone"> 電話回線</label>
+                            </div>
+                        </div>
+                        <div class="auto-filled-item">
+                            <span class="label">明細種類</span>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="receiptType" value="paper" ${receiptPaper}> 紙</label>
+                                <label><input type="radio" name="receiptType" value="web" ${receiptWeb}> WEB</label>
+                            </div>
+                        </div>
+                        <div class="auto-filled-item">
+                            <span class="label">撮影希望</span>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="photoWanted" value="yes" ${photoYes}> あり</label>
+                                <label><input type="radio" name="photoWanted" value="no" ${photoNo}> なし</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 追加入力 -->
+                    <h4 style="margin-top: 1rem;">✏️ 追加入力</h4>
                     <div class="form-row">
                         <label class="form-label">担当者名<span class="required">*</span></label>
                         <input type="text" class="form-input" id="contactName" placeholder="例：山田太郎">
@@ -3408,47 +3730,11 @@
                         <input type="tel" class="form-input" id="mobileNumber" placeholder="例：090-1234-5678">
                     </div>
                     <div class="form-row">
-                        <label class="form-label">案内内容</label>
-                        <div class="form-checkbox-group">
-                            <label class="form-checkbox-label">
-                                <input type="checkbox" id="serviceElectric"> 電気
-                            </label>
-                            <label class="form-checkbox-label">
-                                <input type="checkbox" id="serviceNet"> ネット
-                            </label>
-                            <label class="form-checkbox-label">
-                                <input type="checkbox" id="servicePhone"> 電話回線
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-label">明細種類</label>
-                        <div class="form-checkbox-group">
-                            <label class="form-checkbox-label">
-                                <input type="radio" name="receiptType" value="paper"> 紙明細
-                            </label>
-                            <label class="form-checkbox-label">
-                                <input type="radio" name="receiptType" value="web"> WEB明細
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-label">撮影希望</label>
-                        <div class="form-checkbox-group">
-                            <label class="form-checkbox-label">
-                                <input type="radio" name="photoWanted" value="yes"> あり
-                            </label>
-                            <label class="form-checkbox-label">
-                                <input type="radio" name="photoWanted" value="no"> なし（CB案内）
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <label class="form-label">メモ</label>
                         <textarea class="form-input" id="successMemo" rows="3" placeholder="備考があれば入力"></textarea>
                     </div>
                     <button class="choice-btn success" onclick="saveSuccessLog()" style="width: 100%; margin-top: 1rem;">
-                        💾 ログを保存して完了
+                        📝 ログを保存して終了
                     </button>
                 </div>
             `;
@@ -3457,14 +3743,33 @@
         // 再架電・対象外用フォーム
         function generateEndForm(endType) {
             const isRecall = endType === 'recall' || endType === 'recallScheduled';
+            // 終了理由のデフォルト値を設定
+            let defaultReason = '';
+            if (endType === 'recall' || endType === 'recallScheduled') defaultReason = '不在';
+            else if (endType === 'notTarget') defaultReason = '対象外';
+
             return `
                 <div class="call-start-form" style="margin-top: 1rem;">
-                    <h3>📝 終了情報を入力</h3>
+                    <!-- 自動入力済み情報 -->
+                    <div class="auto-filled-section">
+                        <h4>📋 自動入力済み</h4>
+                        <div class="auto-filled-item">
+                            <span class="label">会社名</span>
+                            <span class="value">${getFullCompanyName()}</span>
+                        </div>
+                        <div class="auto-filled-item">
+                            <span class="label">電話番号</span>
+                            <span class="value">${callSession.phone || '未入力'}</span>
+                        </div>
+                    </div>
+
+                    <!-- 追加入力 -->
+                    <h4 style="margin-top: 1rem;">✏️ 追加入力</h4>
                     <div class="form-row">
                         <label class="form-label">終了理由</label>
                         <select class="form-input" id="endReason">
-                            <option value="不在">不在</option>
-                            <option value="対象外">対象外</option>
+                            <option value="不在" ${defaultReason === '不在' ? 'selected' : ''}>不在</option>
+                            <option value="対象外" ${defaultReason === '対象外' ? 'selected' : ''}>対象外</option>
                             <option value="拒否">拒否</option>
                             <option value="その他">その他</option>
                         </select>
@@ -3480,7 +3785,7 @@
                         <textarea class="form-input" id="endMemo" rows="3" placeholder="備考があれば入力"></textarea>
                     </div>
                     <button class="choice-btn primary" onclick="saveEndLog('${endType}')" style="width: 100%; margin-top: 1rem;">
-                        💾 ログを保存
+                        📝 ログを保存して終了
                     </button>
                 </div>
             `;
@@ -3488,16 +3793,22 @@
 
         // アポ獲得ログを保存
         function saveSuccessLog() {
-            const callData = getCurrentCallData();
-            if (!callData || !callData.caller || !callData.company) {
+            // callSessionから基本情報を取得
+            if (!callSession.caller || !callSession.company) {
                 alert('架電者名と会社名は必須です');
                 return;
             }
 
             const contactName = document.getElementById('contactName');
+            if (!contactName?.value.trim()) {
+                alert('担当者名は必須です');
+                return;
+            }
+
             const mobileNumber = document.getElementById('mobileNumber');
             const successMemo = document.getElementById('successMemo');
 
+            // フォームから最新の選択値を取得（ユーザーが変更している可能性）
             const services = [];
             if (document.getElementById('serviceElectric')?.checked) services.push('電気');
             if (document.getElementById('serviceNet')?.checked) services.push('ネット');
@@ -3507,25 +3818,30 @@
             const photoWanted = document.querySelector('input[name="photoWanted"]:checked')?.value || '';
 
             const log = {
-                ...callData,
+                caller: callSession.caller,
+                company: getFullCompanyName(),
+                companyType: callSession.companyType,
+                phone: callSession.phone,
                 result: 'success',
                 resultLabel: 'アポ獲得',
-                contactName: contactName?.value.trim() || '',
+                contactName: contactName.value.trim(),
                 mobile: mobileNumber?.value.trim() || '',
                 services: services,
                 receiptType: receiptType,
                 photoWanted: photoWanted,
-                memo: successMemo?.value.trim() || ''
+                memo: successMemo?.value.trim() || '',
+                startTime: callSession.startTime
             };
 
             addLog(log);
             alert('ログを保存しました！');
+            showCallerSelectScreen();
         }
 
         // 終了ログを保存
         function saveEndLog(endType) {
-            const callData = getCurrentCallData();
-            if (!callData || !callData.caller || !callData.company) {
+            // callSessionから基本情報を取得
+            if (!callSession.caller || !callSession.company) {
                 alert('架電者名と会社名は必須です');
                 return;
             }
@@ -3543,16 +3859,21 @@
             const resultInfo = resultMap[endType] || { result: 'not-target', label: '対象外' };
 
             const log = {
-                ...callData,
+                caller: callSession.caller,
+                company: getFullCompanyName(),
+                companyType: callSession.companyType,
+                phone: callSession.phone,
                 result: resultInfo.result,
                 resultLabel: resultInfo.label,
                 endReason: endReason?.value || '',
                 recallDateTime: recallDateTime?.value || '',
-                memo: endMemo?.value.trim() || ''
+                memo: endMemo?.value.trim() || '',
+                startTime: callSession.startTime
             };
 
             addLog(log);
             alert('ログを保存しました！');
+            showCallerSelectScreen();
         }
 
         // ログ一覧表示
