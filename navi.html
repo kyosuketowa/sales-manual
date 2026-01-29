@@ -223,11 +223,150 @@
             color: var(--primary);
         }
 
-        /* ========== 進捗バー ========== */
+        /* ========== 架電者選択画面 ========== */
+        .caller-select-screen {
+            display: none;
+            padding: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .caller-select-screen.visible {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .caller-select-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .caller-select-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .caller-select-subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .caller-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .caller-btn {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .caller-btn:hover {
+            border-color: var(--primary);
+            background: #f0f6ff;
+        }
+
+        .caller-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .caller-btn.add-new {
+            border-style: dashed;
+            color: var(--text-gray);
+        }
+
+        .caller-btn.add-new:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .caller-input-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .start-call-btn {
+            width: 100%;
+            padding: 1.25rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%);
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1.5rem;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .start-call-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(38, 162, 105, 0.4);
+        }
+
+        .start-call-btn:disabled {
+            background: var(--border);
+            color: var(--text-gray);
+            cursor: not-allowed;
+        }
+
+        /* ========== 進捗バー（改善版） ========== */
         .progress-container {
             background: var(--bg-white);
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            padding: 1rem 1rem 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .progress-phase {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-phase-icon {
+            font-size: 1.2rem;
+        }
+
+        .progress-phase-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-task {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: #f0f6ff;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .progress-task strong {
+            color: var(--text-dark);
         }
 
         .progress-info {
@@ -241,50 +380,27 @@
         .step-label {
             font-weight: 700;
             color: var(--primary);
+            font-size: 0.9rem;
         }
 
         .step-remaining {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-gray);
-            margin-left: 0.5rem;
-        }
-
-        .step-phase {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-left: 0.5rem;
-        }
-
-        .step-phase.early {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .step-phase.mid {
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        .step-phase.late {
-            background: #fce4ec;
-            color: #c2185b;
         }
 
         .progress-bar {
-            height: 8px;
+            height: 12px;
             background: var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--primary) 0%, var(--accent-green) 100%);
-            border-radius: 4px;
-            transition: width 0.3s ease;
+            border-radius: 6px;
+            transition: width 0.4s ease;
         }
 
         /* ========== メインコンテンツ ========== */
@@ -292,7 +408,7 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 1rem;
-            padding-bottom: 180px; /* ヘルプエリア + ナビバー用 */
+            padding-bottom: 160px;
         }
 
         /* ステップカード */
@@ -301,7 +417,7 @@
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: 0 2px 15px var(--shadow);
-            animation: stepFadeIn 0.35s ease-out;
+            animation: stepFadeIn 0.3s ease-out;
         }
 
         @keyframes stepFadeIn {
@@ -318,41 +434,143 @@
             display: none;
         }
 
-        /* ========== フローティングヘルプエリア ========== */
-        .floating-help {
+        /* ========== トークスクリプト（読み上げ部分）========== */
+        .talk-script {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .talk-script-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            position: absolute;
+            top: -10px;
+            left: 1rem;
+        }
+
+        .talk-script-content {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+            padding-top: 0.5rem;
+        }
+
+        .talk-script-content .highlight {
+            background: linear-gradient(transparent 60%, #fef08a 60%);
+            font-weight: 700;
+            padding: 0 2px;
+        }
+
+        .talk-script-content ruby {
+            ruby-position: over;
+        }
+
+        .talk-script-content rt {
+            font-size: 0.6rem;
+            color: var(--text-gray);
+        }
+
+        /* ========== フローティング困ったボタン ========== */
+        .floating-help-btn {
             position: fixed;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(246,245,244,1) 0%, rgba(246,245,244,0.95) 100%);
-            padding: 0.75rem 1rem;
+            bottom: 90px;
+            right: 16px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(238, 90, 36, 0.4);
             z-index: 98;
-            border-top: 1px solid var(--border);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(238, 90, 36, 0.5);
+        }
+
+        .floating-help-btn:active {
+            transform: scale(0.95);
+        }
+
+        .floating-help-btn.hidden {
             display: none;
         }
 
-        .floating-help.visible {
-            display: block;
-            animation: slideUpHelp 0.3s ease-out;
-        }
-
-        @keyframes slideUpHelp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .floating-help-title {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-
-        .floating-help-buttons {
+        /* ヘルプパネル */
+        .help-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.2);
+            z-index: 200;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            max-height: 60vh;
+            overflow: hidden;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        .help-panel.show {
+            transform: translateY(0);
+        }
+
+        .help-panel-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .help-panel-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .help-panel-close {
+            background: rgba(255,255,255,0.25);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .help-panel-body {
+            padding: 1rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .help-panel-buttons {
+            display: grid;
+            gap: 0.75rem;
         }
 
         .step-title {
@@ -400,7 +618,7 @@
         /* 選択肢ボタン */
         .choices {
             display: grid;
-            gap: 0.75rem;
+            gap: 0.875rem;
             margin: 1.5rem 0;
         }
 
@@ -409,12 +627,13 @@
         }
 
         .choice-btn {
-            padding: 1.2rem 1rem;
+            min-height: 60px;
+            padding: 1rem;
             background: var(--bg-white);
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-dark);
             cursor: pointer;
             transition: all 0.15s ease-out;
@@ -431,7 +650,7 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(26, 95, 180, 0.1);
+            background: rgba(26, 95, 180, 0.15);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.3s, height 0.3s;
@@ -441,23 +660,42 @@
             border-color: var(--primary);
             background: #f0f6ff;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .choice-btn:active {
-            transform: scale(0.96) translateY(0);
+            transform: scale(0.95) translateY(0);
             box-shadow: none;
+            transition: transform 0.1s;
         }
 
         .choice-btn:active::after {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
+        }
+
+        .choice-btn .recommend-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--accent-yellow);
+            color: #5d4e00;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0 12px 0 8px;
         }
 
         .choice-btn.primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             border: none;
+            box-shadow: 0 4px 12px rgba(26, 95, 180, 0.3);
+        }
+
+        .choice-btn.primary:hover {
+            box-shadow: 0 6px 20px rgba(26, 95, 180, 0.4);
+            background: linear-gradient(135deg, #1557a0 0%, var(--primary) 100%);
         }
 
         .choice-btn.primary:hover {
@@ -582,31 +820,31 @@
         }
 
         .modal-close {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.3);
             border: none;
             color: white;
-            min-width: 44px;
-            min-height: 44px;
-            width: 44px;
-            height: 44px;
+            min-width: 50px;
+            min-height: 50px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 1rem;
+            margin-left: 0.75rem;
         }
 
         .modal-close:hover {
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.5);
             transform: scale(1.1);
         }
 
         .modal-close:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
         }
 
         .modal-body {
@@ -624,6 +862,7 @@
 
         .modal-close-btn {
             width: 100%;
+            min-height: 54px;
             padding: 1rem;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
@@ -893,6 +1132,183 @@
 
         .pattern-content.active {
             display: block;
+        }
+
+        /* ========== 確認モーダル ========== */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .confirm-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .confirm-box {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 360px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.2s;
+        }
+
+        .confirm-modal.show .confirm-box {
+            transform: scale(1);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .confirm-message {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn.cancel {
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .confirm-btn.danger {
+            background: linear-gradient(135deg, var(--secondary) 0%, #c71c1c 100%);
+            color: white;
+        }
+
+        /* ========== チュートリアル ========== */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .tutorial-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tutorial-card {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .tutorial-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .tutorial-legend {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .tutorial-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-main);
+            border-radius: 10px;
+        }
+
+        .tutorial-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .tutorial-color.blue {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .tutorial-color.green {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #2ec27e 100%);
+        }
+
+        .tutorial-color.red {
+            background: linear-gradient(135deg, var(--secondary) 0%, #c71c1c 100%);
+        }
+
+        .tutorial-color.white {
+            background: white;
+            border: 2px solid var(--border);
+        }
+
+        .tutorial-text {
+            font-size: 0.9rem;
+        }
+
+        .tutorial-close-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
         }
 
         /* スマホ対応 */
@@ -1410,36 +1826,116 @@
             </div>
         </header>
 
-        <div class="progress-container">
-            <div class="progress-info">
-                <span>
-                    <span class="step-label" id="stepLabel">STEP 1 / 10</span>
-                    <span class="step-phase early" id="stepPhase">序盤</span>
-                </span>
-                <span id="stepName">導入（受付突破）</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+        <!-- 架電者選択画面 -->
+        <div class="caller-select-screen" id="callerSelectScreen">
+            <div class="caller-select-card">
+                <div class="caller-select-title">📞 架電を開始する</div>
+                <div class="caller-select-subtitle">架電者を選択し、会社情報を入力してください</div>
+
+                <label class="form-label">架電者を選択<span class="required">*</span></label>
+                <div class="caller-buttons" id="callerButtons">
+                    <!-- 動的に生成 -->
+                </div>
+
+                <div class="caller-input-section">
+                    <div class="form-row">
+                        <label class="form-label">会社名<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="companyNameInput" placeholder="例：株式会社○○">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">電話番号</label>
+                        <input type="tel" class="form-input" id="phoneNumberInput" placeholder="例：06-1234-5678">
+                    </div>
+                </div>
+
+                <button class="start-call-btn" id="startCallBtn" disabled>架電開始 →</button>
             </div>
         </div>
 
-        <main class="main" id="mainContent">
-            <!-- ステップはJavaScriptで動的に生成 -->
-        </main>
+        <!-- ステップ画面 -->
+        <div id="stepScreen" style="display: none;">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-phase">
+                    <span class="progress-phase-icon" id="phaseIcon">📍</span>
+                    <span class="progress-phase-text" id="phaseText">導入フェーズ</span>
+                </div>
+                <div class="progress-task" id="progressTask">
+                    <strong>今やること:</strong> <span id="taskText">受付を突破する</span>
+                </div>
+                <div class="progress-info">
+                    <span class="step-label" id="stepLabel">STEP 1（残り約9画面）</span>
+                    <span class="step-remaining" id="stepRemaining"></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+                </div>
+            </div>
 
-        <!-- フローティングヘルプエリア -->
-        <div class="floating-help" id="floatingHelp">
-            <div class="floating-help-title">💬 困ったらタップ</div>
-            <div class="floating-help-buttons" id="floatingHelpButtons">
-                <!-- 動的に生成 -->
+            <main class="main" id="mainContent">
+                <!-- ステップはJavaScriptで動的に生成 -->
+            </main>
+        </div>
+
+        <!-- フローティング困ったボタン -->
+        <button class="floating-help-btn hidden" id="floatingHelpBtn">🆘</button>
+
+        <!-- ヘルプパネル -->
+        <div class="help-panel" id="helpPanel">
+            <div class="help-panel-header">
+                <h3>🆘 困ったときの切り返し</h3>
+                <button class="help-panel-close" id="helpPanelClose">×</button>
+            </div>
+            <div class="help-panel-body">
+                <div class="help-panel-buttons" id="helpPanelButtons">
+                    <!-- 動的に生成 -->
+                </div>
             </div>
         </div>
 
-        <nav class="nav-bar">
+        <nav class="nav-bar" id="navBar" style="display: none;">
             <button class="nav-btn back" id="backBtn" disabled>← 戻る</button>
             <button class="nav-btn reset" id="resetBtn">🔄 最初から</button>
             <button class="nav-btn forward" id="forwardBtn" disabled>進む →</button>
         </nav>
+    </div>
+
+    <!-- 確認モーダル -->
+    <div class="confirm-modal" id="confirmModal">
+        <div class="confirm-box">
+            <div class="confirm-icon" id="confirmIcon">⚠️</div>
+            <div class="confirm-title" id="confirmTitle">確認</div>
+            <div class="confirm-message" id="confirmMessage">本当に終了しますか？</div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn cancel" id="confirmCancel">いいえ</button>
+                <button class="confirm-btn danger" id="confirmOk">はい</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- チュートリアル -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-card">
+            <div class="tutorial-title">ボタンの色の意味</div>
+            <div class="tutorial-legend">
+                <div class="tutorial-item">
+                    <div class="tutorial-color blue"></div>
+                    <div class="tutorial-text"><strong>青色</strong> = おすすめ・次に進む</div>
+                </div>
+                <div class="tutorial-item">
+                    <div class="tutorial-color green"></div>
+                    <div class="tutorial-text"><strong>緑色</strong> = 成功・良い反応</div>
+                </div>
+                <div class="tutorial-item">
+                    <div class="tutorial-color red"></div>
+                    <div class="tutorial-text"><strong>赤色</strong> = 終了・注意が必要</div>
+                </div>
+                <div class="tutorial-item">
+                    <div class="tutorial-color white"></div>
+                    <div class="tutorial-text"><strong>白色</strong> = その他の選択肢</div>
+                </div>
+            </div>
+            <button class="tutorial-close-btn" id="tutorialClose">わかりました</button>
+        </div>
     </div>
 
     <!-- モーダル -->
@@ -1480,6 +1976,13 @@
                     <option value="success">アポ獲得</option>
                     <option value="recall">再架電</option>
                     <option value="not-target">対象外</option>
+                </select>
+                <select class="log-filter-select" id="logFilterDate">
+                    <option value="">全期間</option>
+                    <option value="today">今日</option>
+                    <option value="yesterday">昨日</option>
+                    <option value="3days">3日間</option>
+                    <option value="week">1週間</option>
                 </select>
             </div>
             <div class="log-list-body" id="logListBody">
@@ -2327,9 +2830,104 @@
         let currentStep = 'step1';
         let history = [];
         let forwardHistory = [];
+        let selectedCaller = '';
+        let currentCallInfo = { company: '', phone: '' };
+        let confirmCallback = null;
+
+        // フェーズ情報
+        const PHASES = {
+            intro: { icon: '📍', text: '導入フェーズ', task: '受付を突破する' },
+            time: { icon: '⏰', text: '時間確認', task: '時間を確保する' },
+            hearing: { icon: '📋', text: 'ヒアリング中', task: '情報を聞き出す' },
+            explain: { icon: '💡', text: '説明フェーズ', task: 'サービスを説明する' },
+            closing: { icon: '🎯', text: 'クロージング', task: 'アポを確定する' },
+            end: { icon: '✅', text: '完了', task: '結果を記録する' }
+        };
+
+        function getPhaseForStep(stepId) {
+            if (stepId === 'step1' || stepId === 'step1b') return PHASES.intro;
+            if (stepId === 'step2') return PHASES.time;
+            if (stepId.startsWith('step3') || stepId.startsWith('step4') || stepId.startsWith('step5') || stepId.startsWith('step6')) return PHASES.hearing;
+            if (stepId.startsWith('step7') || stepId.startsWith('step8')) return PHASES.explain;
+            if (stepId === 'step9' || stepId === 'step10') return PHASES.closing;
+            return PHASES.end;
+        }
+
+        function getRemainingSteps(progress) {
+            const remaining = Math.ceil((100 - progress) / 10);
+            return `残り約${remaining}画面`;
+        }
 
         function initNavi() {
-            renderStep(currentStep);
+            showCallerSelectScreen();
+            checkTutorial();
+        }
+
+        function checkTutorial() {
+            if (!localStorage.getItem('tutorial_shown')) {
+                document.getElementById('tutorialOverlay').classList.add('show');
+            }
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorialOverlay').classList.remove('show');
+            localStorage.setItem('tutorial_shown', 'true');
+        }
+
+        function showCallerSelectScreen() {
+            document.getElementById('callerSelectScreen').classList.add('visible');
+            document.getElementById('stepScreen').style.display = 'none';
+            document.getElementById('navBar').style.display = 'none';
+            document.getElementById('floatingHelpBtn').classList.add('hidden');
+            renderCallerButtons();
+        }
+
+        function renderCallerButtons() {
+            const container = document.getElementById('callerButtons');
+            let html = '';
+            callers.forEach(c => {
+                const selected = c === selectedCaller ? 'selected' : '';
+                html += `<button class="caller-btn ${selected}" onclick="selectCaller('${c}')">${c}</button>`;
+            });
+            html += `<button class="caller-btn add-new" onclick="showAddCallerPrompt()">+ 新規追加</button>`;
+            container.innerHTML = html;
+            updateStartButton();
+        }
+
+        function selectCaller(name) {
+            selectedCaller = name;
+            renderCallerButtons();
+        }
+
+        function showAddCallerPrompt() {
+            const name = prompt('新しい架電者名を入力:');
+            if (name && name.trim()) {
+                addCaller(name.trim());
+                selectedCaller = name.trim();
+                renderCallerButtons();
+            }
+        }
+
+        function updateStartButton() {
+            const btn = document.getElementById('startCallBtn');
+            const company = document.getElementById('companyNameInput').value.trim();
+            btn.disabled = !selectedCaller || !company;
+        }
+
+        function startCall() {
+            currentCallInfo.company = document.getElementById('companyNameInput').value.trim();
+            currentCallInfo.phone = document.getElementById('phoneNumberInput').value.trim();
+            currentCallInfo.startTime = new Date().toISOString();
+
+            document.getElementById('callerSelectScreen').classList.remove('visible');
+            document.getElementById('stepScreen').style.display = 'block';
+            document.getElementById('navBar').style.display = 'flex';
+            document.getElementById('floatingHelpBtn').classList.remove('hidden');
+
+            history = [];
+            forwardHistory = [];
+            currentStep = 'step1';
+            renderStep('step1');
         }
 
         function renderStep(stepId) {
@@ -2337,23 +2935,23 @@
             if (!step) return;
 
             currentStep = stepId;
+            const phase = getPhaseForStep(stepId);
+
+            // フェーズ表示更新
+            document.getElementById('phaseIcon').textContent = phase.icon;
+            document.getElementById('phaseText').textContent = phase.text;
+            document.getElementById('taskText').textContent = phase.task;
 
             // 進捗更新
-            document.getElementById('stepLabel').textContent = step.title.split(':')[0];
-            document.getElementById('stepName').textContent = step.name;
+            const stepNum = step.title.match(/STEP (\d+)/)?.[1] || '';
+            document.getElementById('stepLabel').textContent = `STEP ${stepNum}（${getRemainingSteps(step.progress)}）`;
             document.getElementById('progressFill').style.width = step.progress + '%';
 
-            // 進行度フェーズ表示
-            const phaseEl = document.getElementById('stepPhase');
-            if (step.progress <= 30) {
-                phaseEl.textContent = '序盤';
-                phaseEl.className = 'step-phase early';
-            } else if (step.progress <= 70) {
-                phaseEl.textContent = '中盤';
-                phaseEl.className = 'step-phase mid';
+            // 終了画面ではプログレス非表示
+            if (step.isEnd) {
+                document.getElementById('progressContainer').style.display = 'none';
             } else {
-                phaseEl.textContent = '終盤';
-                phaseEl.className = 'step-phase late';
+                document.getElementById('progressContainer').style.display = 'block';
             }
 
             // 戻る・進むボタンの状態更新と動的ラベル
@@ -2363,7 +2961,6 @@
             backBtn.disabled = history.length === 0;
             forwardBtn.disabled = forwardHistory.length === 0;
 
-            // 動的ラベル
             if (history.length > 0) {
                 backBtn.innerHTML = '← 戻る<span class="btn-count">(' + history.length + ')</span>';
             } else {
@@ -2379,7 +2976,12 @@
             // コンテンツ生成
             let html = `<div class="step-card">`;
             html += `<div class="step-title">${step.title}</div>`;
-            html += step.content;
+
+            // トークスクリプトの変換（読み上げ部分を強調）
+            let content = step.content;
+            content = content.replace(/\(?\^\^\)?/g, '').replace(/〜/g, '').replace(/☆/g, '').replace(/♪/g, '');
+
+            html += content;
 
             // 選択肢
             if (step.choices && step.choices.length > 0) {
@@ -2387,10 +2989,17 @@
                 html += `<div class="choices ${colClass}">`;
                 step.choices.forEach((choice, index) => {
                     const classStr = choice.class || '';
+                    const isEndChoice = choice.next && (choice.next.startsWith('end') || choice.class === 'danger');
+                    const recommend = index === 0 && choice.class === 'primary' ? '<span class="recommend-badge">おすすめ</span>' : '';
+
                     if (choice.action === 'showHelp') {
-                        html += `<button class="choice-btn ${classStr}" onclick="showHelp('${choice.helpId}')">${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                        html += `<button class="choice-btn ${classStr}" onclick="showHelp('${choice.helpId}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
                     } else if (choice.next) {
-                        html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}')">${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                        if (isEndChoice && !choice.next.startsWith('step')) {
+                            html += `<button class="choice-btn ${classStr}" onclick="confirmEndAction('${choice.next}', '${choice.text}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                        } else {
+                            html += `<button class="choice-btn ${classStr}" onclick="goToStep('${choice.next}')">${recommend}${choice.text}${choice.sub ? `<span class="btn-sub">${choice.sub}</span>` : ''}</button>`;
+                        }
                     }
                 });
                 html += `</div>`;
@@ -2400,33 +3009,61 @@
 
             document.getElementById('mainContent').innerHTML = html;
 
-            // フローティングヘルプエリア更新
-            const floatingHelp = document.getElementById('floatingHelp');
-            const floatingHelpButtons = document.getElementById('floatingHelpButtons');
+            // フローティングヘルプボタン更新
+            const helpBtn = document.getElementById('floatingHelpBtn');
+            const helpPanelButtons = document.getElementById('helpPanelButtons');
 
             if (step.helps && step.helps.length > 0) {
+                helpBtn.classList.remove('hidden');
                 let helpHtml = '';
                 step.helps.forEach(help => {
-                    helpHtml += `<button class="help-btn" onclick="showHelp('${help.id}')">${help.label}</button>`;
+                    helpHtml += `<button class="help-btn" onclick="showHelp('${help.id}'); hideHelpPanel();">${help.label}</button>`;
                 });
-                floatingHelpButtons.innerHTML = helpHtml;
-                floatingHelp.classList.add('visible');
+                helpPanelButtons.innerHTML = helpHtml;
             } else {
-                floatingHelp.classList.remove('visible');
+                helpBtn.classList.add('hidden');
             }
 
             window.scrollTo(0, 0);
         }
 
+        function confirmEndAction(nextStep, actionText) {
+            document.getElementById('confirmIcon').textContent = '⚠️';
+            document.getElementById('confirmTitle').textContent = '確認';
+            document.getElementById('confirmMessage').textContent = `「${actionText}」を選択しますか？`;
+            confirmCallback = () => goToStep(nextStep);
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        function hideConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+            confirmCallback = null;
+        }
+
+        function executeConfirm() {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            hideConfirmModal();
+        }
+
+        function showHelpPanel() {
+            document.getElementById('helpPanel').classList.add('show');
+        }
+
+        function hideHelpPanel() {
+            document.getElementById('helpPanel').classList.remove('show');
+        }
+
         function goToStep(stepId) {
             history.push(currentStep);
-            forwardHistory = []; // 新しい選択をしたら進む履歴をクリア
+            forwardHistory = [];
             renderStep(stepId);
         }
 
         function goBack() {
             if (history.length > 0) {
-                forwardHistory.push(currentStep); // 現在のステップを進む履歴に追加
+                forwardHistory.push(currentStep);
                 const prevStep = history.pop();
                 renderStep(prevStep);
             }
@@ -2434,17 +3071,19 @@
 
         function goForward() {
             if (forwardHistory.length > 0) {
-                history.push(currentStep); // 現在のステップを戻る履歴に追加
+                history.push(currentStep);
                 const nextStep = forwardHistory.pop();
                 renderStep(nextStep);
             }
         }
 
         function resetNavi() {
-            history = [];
-            forwardHistory = [];
-            currentStep = 'step1';
-            renderStep('step1');
+            if (confirm('最初からやり直しますか？')) {
+                showCallerSelectScreen();
+                selectedCaller = '';
+                document.getElementById('companyNameInput').value = '';
+                document.getElementById('phoneNumberInput').value = '';
+            }
         }
 
         function showHelp(helpId) {
@@ -2508,11 +3147,7 @@
         // イベントリスナー
         document.getElementById('backBtn').addEventListener('click', goBack);
         document.getElementById('forwardBtn').addEventListener('click', goForward);
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            if (confirm('最初からやり直しますか？')) {
-                resetNavi();
-            }
-        });
+        document.getElementById('resetBtn').addEventListener('click', resetNavi);
         document.getElementById('modalClose').addEventListener('click', closeModal);
         document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
         document.getElementById('modalActionBtn').addEventListener('click', closeModalAndProceed);
@@ -2521,6 +3156,21 @@
                 closeModal();
             }
         });
+
+        // 架電者選択画面のイベント
+        document.getElementById('companyNameInput').addEventListener('input', updateStartButton);
+        document.getElementById('startCallBtn').addEventListener('click', startCall);
+
+        // フローティングヘルプ
+        document.getElementById('floatingHelpBtn').addEventListener('click', showHelpPanel);
+        document.getElementById('helpPanelClose').addEventListener('click', hideHelpPanel);
+
+        // 確認モーダル
+        document.getElementById('confirmCancel').addEventListener('click', hideConfirmModal);
+        document.getElementById('confirmOk').addEventListener('click', executeConfirm);
+
+        // チュートリアル
+        document.getElementById('tutorialClose').addEventListener('click', closeTutorial);
 
         // ========== パスワード保護（初期化）==========
         (function() {
@@ -2911,9 +3561,39 @@
             document.getElementById('logListModal').classList.remove('show');
         }
 
+        function getDateFilterRange(filterValue) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            switch (filterValue) {
+                case 'today':
+                    return { start: today, end: now };
+                case 'yesterday':
+                    return { start: yesterday, end: today };
+                case '3days':
+                    const threeDaysAgo = new Date(today);
+                    threeDaysAgo.setDate(threeDaysAgo.getDate() - 2);
+                    return { start: threeDaysAgo, end: now };
+                case 'week':
+                    const weekAgo = new Date(today);
+                    weekAgo.setDate(weekAgo.getDate() - 6);
+                    return { start: weekAgo, end: now };
+                default:
+                    return null;
+            }
+        }
+
+        function formatDateHeader(date) {
+            const days = ['日', '月', '火', '水', '木', '金', '土'];
+            return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}（${days[date.getDay()]}）`;
+        }
+
         function renderLogList() {
             const filterCaller = document.getElementById('logFilterCaller').value;
             const filterResult = document.getElementById('logFilterResult').value;
+            const filterDate = document.getElementById('logFilterDate').value;
 
             let filteredLogs = [...callLogs].reverse();
 
@@ -2922,6 +3602,14 @@
             }
             if (filterResult) {
                 filteredLogs = filteredLogs.filter(log => log.result === filterResult);
+            }
+
+            const dateRange = getDateFilterRange(filterDate);
+            if (dateRange) {
+                filteredLogs = filteredLogs.filter(log => {
+                    const logDate = new Date(log.createdAt);
+                    return logDate >= dateRange.start && logDate <= dateRange.end;
+                });
             }
 
             const body = document.getElementById('logListBody');
@@ -2936,21 +3624,49 @@
                 return;
             }
 
-            body.innerHTML = filteredLogs.map((log, index) => {
+            // 日付ごとにグループ化
+            const grouped = {};
+            filteredLogs.forEach(log => {
                 const date = new Date(log.createdAt);
-                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                const dateKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+                if (!grouped[dateKey]) {
+                    grouped[dateKey] = { date: date, logs: [], stats: { success: 0, recall: 0, notTarget: 0 } };
+                }
+                grouped[dateKey].logs.push(log);
+                if (log.result === 'success') grouped[dateKey].stats.success++;
+                else if (log.result === 'recall') grouped[dateKey].stats.recall++;
+                else grouped[dateKey].stats.notTarget++;
+            });
 
-                return `
-                    <div class="log-item" onclick="showLogDetail(${log.id})">
-                        <div class="log-item-header">
-                            <span class="log-item-date">${dateStr}</span>
-                            <span class="log-item-result ${log.result}">${log.resultLabel}</span>
+            let html = '';
+            Object.keys(grouped).forEach(dateKey => {
+                const group = grouped[dateKey];
+                const stats = group.stats;
+                const statsStr = `アポ:${stats.success} / 再架電:${stats.recall} / 対象外:${stats.notTarget}`;
+
+                html += `<div class="log-date-header" style="background: var(--bg-main); padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 8px; font-size: 0.85rem;">
+                    <strong>${formatDateHeader(group.date)}</strong> - ${group.logs.length}件
+                    <div style="font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem;">${statsStr}</div>
+                </div>`;
+
+                group.logs.forEach(log => {
+                    const date = new Date(log.createdAt);
+                    const timeStr = `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+                    html += `
+                        <div class="log-item" onclick="showLogDetail(${log.id})">
+                            <div class="log-item-header">
+                                <span class="log-item-date">${timeStr}</span>
+                                <span class="log-item-result ${log.result}">${log.resultLabel}</span>
+                            </div>
+                            <div class="log-item-company">${log.company}</div>
+                            <div class="log-item-caller">架電者：${log.caller}</div>
                         </div>
-                        <div class="log-item-company">${log.company}</div>
-                        <div class="log-item-caller">架電者：${log.caller}</div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                });
+            });
+
+            body.innerHTML = html;
         }
 
         // ログ詳細表示
@@ -3065,16 +3781,37 @@
             }
         }
 
-        // CSVダウンロード
+        // CSVダウンロード（フィルター対応）
         function downloadCsv() {
-            if (callLogs.length === 0) {
+            const filterCaller = document.getElementById('logFilterCaller').value;
+            const filterResult = document.getElementById('logFilterResult').value;
+            const filterDate = document.getElementById('logFilterDate').value;
+
+            let logsToExport = [...callLogs];
+
+            if (filterCaller) {
+                logsToExport = logsToExport.filter(log => log.caller === filterCaller);
+            }
+            if (filterResult) {
+                logsToExport = logsToExport.filter(log => log.result === filterResult);
+            }
+
+            const dateRange = getDateFilterRange(filterDate);
+            if (dateRange) {
+                logsToExport = logsToExport.filter(log => {
+                    const logDate = new Date(log.createdAt);
+                    return logDate >= dateRange.start && logDate <= dateRange.end;
+                });
+            }
+
+            if (logsToExport.length === 0) {
                 alert('ダウンロードするログがありません');
                 return;
             }
 
             const headers = ['日時', '架電者', '会社名', '電話番号', '結果', '担当者名', '携帯番号', '案内内容', '明細種類', '撮影希望', '終了理由', '再架電予定', 'メモ'];
 
-            const rows = callLogs.map(log => {
+            const rows = logsToExport.map(log => {
                 const date = new Date(log.createdAt);
                 const dateStr = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 
@@ -3098,8 +3835,16 @@
             const csvContent = '\uFEFF' + headers.join(',') + '\n' + rows.join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
+            // ファイル名に期間を含める
             const today = new Date();
-            const fileName = `架電ログ_${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}.csv`;
+            const formatDate = d => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+            let fileName;
+
+            if (dateRange) {
+                fileName = `架電ログ_${formatDate(dateRange.start)}_${formatDate(dateRange.end)}.csv`;
+            } else {
+                fileName = `架電ログ_全期間_${formatDate(today)}.csv`;
+            }
 
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -3210,6 +3955,7 @@
         document.getElementById('logDeleteAll').addEventListener('click', deleteAllLogs);
         document.getElementById('logFilterCaller').addEventListener('change', renderLogList);
         document.getElementById('logFilterResult').addEventListener('change', renderLogList);
+        document.getElementById('logFilterDate').addEventListener('change', renderLogList);
 
         document.getElementById('logListModal').addEventListener('click', (e) => {
             if (e.target.id === 'logListModal') hideLogList();
