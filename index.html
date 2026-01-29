@@ -61,6 +61,34 @@
             opacity: 0.9;
         }
 
+        /* ページ切り替えタブ */
+        .page-tabs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.75rem;
+        }
+
+        .page-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .page-tab:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .page-tab.active {
+            background: white;
+            color: var(--primary);
+        }
+
         /* ナビゲーション */
         .nav {
             background: var(--bg-white);
@@ -802,6 +830,10 @@
     <header class="header">
         <h1>📞 営業トークスクリプト マニュアル</h1>
         <p>Google撮影 × 電気・ネット案内 | MIXED株式会社</p>
+        <div class="page-tabs">
+            <a href="index.html" class="page-tab active">📖 マニュアル</a>
+            <a href="navi.html" class="page-tab">🎯 架電ナビ</a>
+        </div>
         <button class="hamburger" id="hamburgerBtn" aria-label="メニュー">
             <span></span>
             <span></span>
